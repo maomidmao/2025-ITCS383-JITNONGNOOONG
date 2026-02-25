@@ -56,7 +56,22 @@
     - System Boundary: The boundary is clearly separates that the Web UI component will be in HTML and will responsible only for user interaction and API calling.
 
 ## Additional Diagram
+
 ### Data Flow Diagram
+#### Explanation:
+The Data Flow Diagrams explain how the system operates as a functional pipeline, moving from a broad context to granular technical processes.
+
+**DFD Level 0 & 1: Scope and Scalability**
+The Level 0 diagram establishes the high-level scope, showing how the four main actors interact with the system "P0" to exchange adoption requests, reports, and donations. Level 1 expands this into six core functional areas and introduces four dedicated databases (User, Dog, Sponsor, and Adoption). This multi-database architecture is a key design decision to support the high-traffic requirement of 1,000 transactions daily without performance loss.
+
+**DFD Level 2: Process Breakdown**
+The Level 2 view details the internal logic of the six primary processes:
+1. Authentication & Verification: Secures the platform through multi-role authorization and real-time background checks against police and blacklist data.
+2. Dog Management: Provides a workflow for staff to upload high-quality profiles and health data into the Dog Database.
+3. Adoption Management: Manages the "most suitable" selection logic; when staff approve an adopter, the system locks the dog profile to prevent duplicate requests and schedules the delivery.
+4. Sponsor Management: Processes donations and routes logos for banner display in the web UI.
+5. Check-up Management: A dedicated longitudinal process that enforces the one-year monitoring rule, allowing staff to record calls and photos into the Adoption Database every month.
+6. Reporting: Aggregates data from all databases to provide the Admin with real-time visibility into dog availability and potential adopter queues.
 
 #### Level 0
 ```mermaid
@@ -456,15 +471,15 @@ flowchart LR
 ```
 
 ### Class Diagram
-**Explanation:**
+#### Explanation:
 The Class Diagram defines the Static View—how data is structured and how objects interact to satisfy business rules.
-- Requirement: Role-Based Access & Security
+1. Requirement: Role-Based Access & Security
   - Design Decision: The implementation of an abstract User class with specialized subclasses (General_User, Organization_Staff, Admin, Eligible_sponsors) ensures Encapsulation and Role-Based Access Control (RBAC) .
-  - Verification Interface: By using <<Interface>> for VerificationService and CitizenProfileService, the system supports the requirement for "enhanced security" by decoupling the core logic from external police and blacklist APIs .
-- Requirement: Dog Readiness & Medical History
-  - Design Decision: The Dog class is linked to TreatmentRecord and TrainingRecord. This ensures the "Dog practicing" and medical requirements are documented before the DogStatus is updated to AVAILABLE.
-- Requirement: Sponsor Management
-  - Design Decision: The Eligible_sponsors class handles the unique business rule: one fixed-size banner regardless of donation amount. This is enforced at the class level to maintain the "blue and white" UI consistency.
+  - Verification Interface: By using Interface for VerificationService and CitizenProfileService, the system supports the requirement for "enhanced security" by decoupling the core logic from external police and blacklist APIs .
+2. Requirement: Dog Readiness & Medical History
+  - Design Decision: The Dog class is linked to TreatmentRecord and TrainingRecord. This ensures the "Dog practicing" and medical requirements are documented before the DogStatus is updated.
+3. Requirement: Sponsor Management
+  - Design Decision: The Eligible_sponsors class handles the unique business rule: one fixed-size banner regardless of donation amount.
     
 ```mermaid
 classDiagram
