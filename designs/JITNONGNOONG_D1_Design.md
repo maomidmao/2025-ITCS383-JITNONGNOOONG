@@ -214,10 +214,6 @@ flowchart LR
 **1. Authentication and Verification**
 ```mermaid
 flowchart LR
-  classDef ext fill:#fff,stroke:#111,stroke-width:1px;
-  classDef proc fill:#f7f7ff,stroke:#111,stroke-width:1px;
-  classDef store fill:#fff7f0,stroke:#111,stroke-width:1px;
-
   U["General User (Thai only)"]:::ext
   S["Organization Staff"]:::ext
   A["Admin"]:::ext
@@ -272,10 +268,6 @@ flowchart LR
 **2. Dog Management**
 ```mermaid
 flowchart LR
-  classDef ext fill:#fff,stroke:#111,stroke-width:1px;
-  classDef proc fill:#f7f7ff,stroke:#111,stroke-width:1px;
-  classDef store fill:#fff7f0,stroke:#111,stroke-width:1px;
-
   S["Organization Staff"]:::ext
 
   P21(("2.1 View Dog List")):::proc
