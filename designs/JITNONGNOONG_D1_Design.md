@@ -458,12 +458,11 @@ flowchart LR
 ### Class Diagram
 #### Explanation: 
 The class diagram is designed to handle the specific logic of a non-profit adoption workflow while maintaining system security. 
-
-    - Accessibility & User Roles: The User abstract class ensures a unified login for all ages, while specific subclasses like General_User, Organization_Staff, and Admin provide the tailored interfaces required for their specific tasks .
-    - Dog Profile & High-Res Content: The Dog class includes attributes for dogimage and medicalProfile. It links to TreatmentRecord and TrainingRecord to ensure dogs are only added to the "Available" list after completing their practicing/medical phases.
-    - Verification Interface: The VerificationService and CitizenProfileService interfaces are designed to call the police criminal record and blacklist systems before an adoption is approved, satisfying the "enhancing security" requirement .
-    - Post-Adoption Tracking: The relationship between AdoptionForm and Dog allows the system to log the "one-year check-up" data, satisfying the requirement to record monthly photos and updates.
-    - Sponsor Management: The Eligible_sponsors class handles the unique requirement of a fixed banner size regardless of the donation amount.
+- Accessibility & User Roles: The User abstract class ensures a unified login for all ages, while specific subclasses like General_User, Organization_Staff, and Admin provide the tailored interfaces required for their specific tasks .
+- Dog Profile & High-Res Content: The Dog class includes attributes for dogimage and medicalProfile. It links to TreatmentRecord and TrainingRecord to ensure dogs are only added to the "Available" list after completing their practicing/medical phases.
+- Verification Interface: The VerificationService and CitizenProfileService interfaces are designed to call the police criminal record and blacklist systems before an adoption is approved, satisfying the "enhancing security" requirement .
+- Post-Adoption Tracking: The relationship between AdoptionForm and Dog allows the system to log the "one-year check-up" data, satisfying the requirement to record monthly photos and updates.
+- Sponsor Management: The Eligible_sponsors class handles the unique requirement of a fixed banner size regardless of the donation amount.
     
 ```mermaid
 classDiagram
