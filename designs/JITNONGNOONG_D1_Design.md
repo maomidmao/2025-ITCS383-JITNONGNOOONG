@@ -5,7 +5,7 @@
 
 **Explanation:** The design of this Context Diagram shows the big picture of the Dog Adoption System. It shows which and conceptually how actors and external systems interact with the system.
 
-![alt text](designs/diagrams/ContextDiagram.png)
+![Context Diagram](/diagrams/ContextDiagram.png)
 
 <div style="page-break-after: always"></div>
 
