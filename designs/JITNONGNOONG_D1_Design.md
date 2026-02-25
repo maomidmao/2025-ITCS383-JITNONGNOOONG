@@ -61,11 +61,11 @@
 #### Explanation:
 The Data Flow Diagrams explain how the system operates as a functional pipeline, moving from a broad context to granular technical processes.
 
-**DFD Level 0 & 1: Scope and Scalability** 
-    The Level 0 diagram establishes the high-level scope, showing how the four main actors interact with the system "P0" to exchange adoption requests, reports, and donations. Level 1 expands this into six core functional areas and introduces four dedicated databases (User, Dog, Sponsor, and Adoption). This multi-database architecture is a key design decision to support the high-traffic requirement of 1,000 transactions daily without performance loss.
+**DFD Level 0 & 1:** 
+The Level 0 diagram establishes the high-level scope, showing how the four main actors interact with the system "P0" to exchange adoption requests, reports, and donations. Level 1 expands this into six core functional areas and introduces four dedicated databases (User, Dog, Sponsor, and Adoption). This multi-database architecture is a key design decision to support the high-traffic requirement of 1,000 transactions daily without performance loss.
 
-**DFD Level 2: Process Breakdown**
-    The Level 2 view details the internal logic of the six primary processes:
+**DFD Level 2:** 
+The Level 2 view details the internal logic of the six primary processes:
 1. Authentication & Verification: Secures the platform through multi-role authorization and real-time background checks against police and blacklist data.
 2. Dog Management: Provides a workflow for staff to upload high-quality profiles and health data into the Dog Database.
 3. Adoption Management: Manages the "most suitable" selection logic; when staff approve an adopter, the system locks the dog profile to prevent duplicate requests and schedules the delivery.
