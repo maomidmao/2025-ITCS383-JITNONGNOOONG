@@ -108,6 +108,361 @@ flowchart LR
   P0 -->|"Report"| A
 ```
 
+#### Level 1
+```mermaid
+flowchart LR
+  %% External Entities
+  U["General User(Thai only)"]
+  S["Organization Staff"]
+  A["Admin"]
+  SP["Sponsor"]
+
+  %% Processes
+  P1(("1. Authentication & Verification"))
+  P2(("2. Dog Management"))
+  P3(("3. Adoption Management"))
+  P4(("4. Sponsor Management"))
+  P5(("5. Check-up Management"))
+  P6(("6. Reporting"))
+
+  %% Data Stores
+  D1[("D1 User Database")]
+  D2[("D2 Dog Database")]
+  D3[("D3 Sponser Database")]
+  D4[("D4 Adoption Database")]
+
+  %% --- Authentication & Verification ---
+  U -->|"Password"| P1
+  U -->|"Email"| P1
+  SP -->|"Password"| P1
+  SP -->|"Email"| P1
+  S -->|"Password"| P1
+  S -->|"Email"| P1
+  A -->|"Password"| P1
+  A -->|"Email"| P1
+  D1 -->|"Password"| P1
+  D1 -->|"Email"| P1
+  D3 -->|"Password"| P1
+  D3 -->|"Email"| P1
+  P1 -->|"Password"| D1
+  P1 -->|"Email"| D1
+  P1 -->|"Password"| D3
+  P1 -->|"Email"| D3
+  P1 -->|"Status"| U
+  P1 -->|"Status"| S
+  P1 -->|"Status"| A
+  P1 -->|"Status"| SP
+
+  %% --- Dog Management ---
+  S -->|"Image"| P2
+  S -->|"General Info"| P2
+  S -->|"Traning Profile"| P2
+  S -->|"Medical Profile"| P2
+  S -->|"Personality"| P2
+  S -->|"Dog Status"| P2
+  P2 -->|"Dog Status"| S
+  P2 -->|"Image"| D2
+  P2 -->|"General Info"| D2
+  P2 -->|"Traning Profile"| D2
+  P2 -->|"Medical Profile"| D2
+  P2 -->|"Personality"| D2
+  P2 -->|"Dog Status"| D2
+  D2 -->|"Image"| P2
+  D2 -->|"General Info"| P2
+  D2 -->|"Traning Profile"| P2
+  D2 -->|"Medical Profile"| P2
+  D2 -->|"Personality"| P2
+  D2 -->|"Dog Status"| P2
+
+  %% --- Adoption Management ---
+  U -->|"Adoption Request"| P3
+  D2 -->|"Dog Profile"| P3
+  D1 -->|"User Profile"| P3
+  P3 --> |"Adoption Request"| S
+  P3 -->|"Dog Profile"| S
+  P3 -->|"User Profile"| S
+  S -->|"Approval Status"| P3
+  P3 -->|"Approval Status"| U
+  P3 -->|"Adoption Request"| D4
+  D4 -->|"Adoption Request"| P3
+  U -->|"Delivery Date"| P3
+  P3 -->|"Delivery Date"| D4
+
+  %% --- Sponsor Management ---
+  SP -->|"Banner"| P4
+  SP -->|"Donation"| P4
+  P4 -->|"Banner"| D3
+  P4 -->|"Donation"| D3
+  D3 -->|"Banner"| P4
+
+  %% --- Check-up Management ---
+  D4 -->|"Adoption Info"|P5
+  U -->|"Adopted Image"| P5
+  U -->|"Info"| P5
+  S -->|"Visit record"| P5
+  P5 -->|"Visit record"| S
+
+  %% --- Reporting ---
+  A -->|"Report Request"| P6
+  D2 -->|"Dog Info"| P6
+  D4 -->|"Adoption Info"| P6
+  P5 -->|"Visit record"| P6
+  P6 -->|"Report"| A
+```
+
+#### Level 2
+**1. Authentication and Verification**
+```mermaid
+flowchart LR
+  classDef ext fill:#fff,stroke:#111,stroke-width:1px;
+  classDef proc fill:#f7f7ff,stroke:#111,stroke-width:1px;
+  classDef store fill:#fff7f0,stroke:#111,stroke-width:1px;
+
+  U["General User (Thai only)"]:::ext
+  S["Organization Staff"]:::ext
+  A["Admin"]:::ext
+  SP["Sponsor"]:::ext
+
+  P11(("1.1 Register")):::proc
+  P12(("1.2 Login")):::proc
+  P13(("1.3 Verification")):::proc
+  P14(("1.4 Authorization")):::proc
+
+  D1[("D1 User Database")]:::store
+  D3[("D3 Sponsor Database")]:::store
+
+  U -->|"Email"| P11
+  U -->|"Password"| P11
+  S -->|"Email"| P11
+  S -->|"Password"| P11
+  A -->|"Email"| P11
+  A -->|"Password"| P11
+  SP -->|"Email"| P11
+  SP -->|"Password"| P11
+
+  U -->|"Email"| P12
+  U -->|"Password"| P12
+  S -->|"Email"| P12
+  S -->|"Password"| P12
+  A -->|"Email"| P12
+  A -->|"Password"| P12
+  SP -->|"Email"| P12
+  SP -->|"Password"| P12
+
+  D1 -->|"Email"| P12
+  D1 -->|"Password"| P12
+  D3 -->|"Email"| P12
+  D3 -->|"Password"| P12
+
+  P11 -->|"Email"| D1
+  P11 -->|"Password"| D1
+  P11 -->|"Email"| D3
+  P11 -->|"Password"| D3
+
+  P11 -->|"Status"| P13
+  P12 -->|"Status"| P13
+  P13 -->|"Status"| P14
+
+  P14 -->|"Status"| U
+  P14 -->|"Status"| S
+  P14 -->|"Status"| A
+  P14 -->|"Status"| SP
+```
+
+**2. Dog Management**
+```mermaid
+flowchart LR
+  classDef ext fill:#fff,stroke:#111,stroke-width:1px;
+  classDef proc fill:#f7f7ff,stroke:#111,stroke-width:1px;
+  classDef store fill:#fff7f0,stroke:#111,stroke-width:1px;
+
+  S["Organization Staff"]:::ext
+
+  P21(("2.1 View Dog List")):::proc
+  P22(("2.2 View Dog Profile")):::proc
+  P23(("2.3 Add Dog Profile")):::proc
+  P24(("2.4 Update Dog Profile")):::proc
+  P25(("2.5 Delete Dog Profile")):::proc
+
+  D2[("D2 Dog Database")]:::store
+
+  S --> P21
+  S --> P22
+
+  D2 -->|"Image"| P21
+  D2 -->|"General Info"| P21
+  D2 -->|"Training Profile"| P21
+  D2 -->|"Medical Profile"| P21
+  D2 -->|"Personality"| P21
+  D2 -->|"Dog Status"| P21
+
+  D2 -->|"Image"| P22
+  D2 -->|"General Info"| P22
+  D2 -->|"Training Profile"| P22
+  D2 -->|"Medical Profile"| P22
+  D2 -->|"Personality"| P22
+  D2 -->|"Dog Status"| P22
+
+  P21 --> P22
+
+  S -->|"Image"| P23
+  S -->|"General Info"| P23
+  S -->|"Training Profile"| P23
+  S -->|"Medical Profile"| P23
+  S -->|"Personality"| P23
+  S -->|"Dog Status"| P23
+
+  S -->|"Image"| P24
+  S -->|"General Info"| P24
+  S -->|"Training Profile"| P24
+  S -->|"Medical Profile"| P24
+  S -->|"Personality"| P24
+  S -->|"Dog Status"| P24
+
+  S -->|"Dog Status"| P25
+
+  P23 -->|"Image"| D2
+  P23 -->|"General Info"| D2
+  P23 -->|"Training Profile"| D2
+  P23 -->|"Medical Profile"| D2
+  P23 -->|"Personality"| D2
+  P23 -->|"Dog Status"| D2
+
+  P24 -->|"Image"| D2
+  P24 -->|"General Info"| D2
+  P24 -->|"Training Profile"| D2
+  P24 -->|"Medical Profile"| D2
+  P24 -->|"Personality"| D2
+  P24 -->|"Dog Status"| D2
+
+  P25 -->|"Dog Status"| D2
+
+  P23 -->|"Dog Status"| S
+  P24 -->|"Dog Status"| S
+  P25 -->|"Dog Status"| S
+```
+
+**3. Adoption Management**
+```mermaid
+flowchart LR
+  U["General User(Thai only)"]
+  S["Organization Staff"]
+
+  P31(("3.1 Add to Favorite"))
+  P32(("3.2 Make Adoption Request"))
+  P33(("3.3 View Request"))
+  P34(("3.4 Approve/Reject Adoption Request"))
+  P35(("3.5 Result Notification"))
+  P36(("3.6 Delivery Scheduling"))
+
+  D1[("D1 User Database")]
+  D2[("D2 Dog Database")]
+  D4[("D4 Adoption Database")]
+
+  D1 -->|"User Profile"| P31
+  D2 -->|"Dog Profile"| P31
+  U --> P31
+
+  U -->|"Adoption Request"| P32
+  D2 -->|"Dog Profile"| P32
+  D1 -->|"User Profile"| P32
+
+  P32 -->|"Adoption Request"| D4
+
+  D4 -->|"Adoption Request"| P33
+  P33 -->|"Adoption Request"| S
+
+  S -->|"Approval Status"| P34
+
+  P33 --> P34
+  P34 --> P35
+
+  P35 -->|"Approval Status"| U
+
+  U -->|"Delivery Date"| P36
+  P36 -->|"Delivery Date"| D4
+```
+
+**4. Sponser Management**
+```mermaid
+flowchart LR
+  SP["Sponsor"]
+  U["General User(Thai only)"]
+
+  P41(("4.1 Upload Banner"))
+  P42(("4.2 Make Donation"))
+  P43(("4.3 Display Banner"))
+
+  D3[("D3 Sponser Database")]
+
+  SP -->|"Banner"| P41
+  P41 -->|"Banner"| D3
+
+  SP -->|"Donation"| P42
+  P42 -->|"Donation"| D3
+
+  D3 -->|"Banner"| P43
+  P43 -->|"Banner"| U
+```
+
+**5. Check-up Management**
+```mermaid
+flowchart LR
+  U["General User(Thai only)"]
+  S["Organization Staff"]
+
+  P51(("5.1 Notification"))
+  P52(("5.2 Upload Picture and Info"))
+  P53(("5.3 View Check-up"))
+  P54(("5.4 Make Visit Request"))
+  P55(("5.5 Record Visit"))
+
+  D4[("D4 Adoption Database")]
+
+  D4 -->|"Adoption Info"| P51
+
+  P51 --> P52
+  P51 --> P54
+
+  U -->|"Adopted Image"| P52
+  U -->|"Info"| P52
+
+  P52 -->|"Adopted Image"| P53
+  P52 -->|"Info"| P53
+  U --> P53
+  S --> P53
+
+  S -->|"Visit record"| P55
+  P55 -->|"Visit record"| S
+
+  P54 --> P55
+```
+
+**6. Reporting**
+```mermaid
+flowchart LR
+  A["Admin"]
+
+  P61(("6.1 Request Report"))
+  P62(("6.2 Compile and Process Dog/Adoption/Check-up history data"))
+  P63(("6.3 Generate Report"))
+
+  D2[("D2 Dog Database")]
+  D4[("D4 Adoption Database")]
+
+  A -->|"Report Request"| P61
+
+  D2 -->|"Dog Info"| P62
+  D4 -->|"Adoption Info"| P62
+
+  P5(("5. Check-up Management")) -->|"Visit record"| P62
+
+  P61 --> P62
+  P62 --> P63
+
+  P63 -->|"Report"| A
+```
+
 ### Class Diagram
 
 ```mermaid
