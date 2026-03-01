@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เข้าสู่ระบบ — JITNONGNOONG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/login.css">
+  
+</head>
+<body>
+  <a class="skip-link" href="#auth-form">ข้ามไปแบบฟอร์ม</a>
+
+  <main class="auth-page">
+    <div class="auth-box">
+      <div class="auth-logo">
+        <a href="/" aria-label="กลับหน้าแรก JITNONGNOONG">🐾 JITNONGNOONG</a>
+        <p class="text-muted text-small" style="margin-top:4px">ระบบรับเลี้ยงสุนัข</p>
+      </div>
+
+      <!-- Tabs: Login / Register -->
+      <div class="tabs" role="tablist" aria-label="เลือกโหมด">
+        <button class="tab-btn" id="tab-login-btn" role="tab" aria-selected="true"  aria-controls="panel-login"    onclick="switchTab('login')">เข้าสู่ระบบ</button>
+        <button class="tab-btn" id="tab-reg-btn"   role="tab" aria-selected="false" aria-controls="panel-register" onclick="switchTab('register')">สมัครสมาชิก</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="panel-login" class="tab-panel active" role="tabpanel" aria-labelledby="tab-login-btn">
+        <div id="loginAlert" class="alert" role="alert" aria-live="polite"></div>
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label form-label--required" for="loginEmail">อีเมล</label>
+            <input class="form-control" type="email" id="loginEmail" name="email"
+                   autocomplete="email" required aria-required="true"
+                   placeholder="your@email.com">
+            <span class="form-error" id="loginEmailErr">กรุณากรอกอีเมลที่ถูกต้อง</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label form-label--required" for="loginPass">รหัสผ่าน</label>
+            <input class="form-control" type="password" id="loginPass" name="password"
+                   autocomplete="current-password" required aria-required="true"
+                   placeholder="รหัสผ่าน">
+            <span class="form-error" id="loginPassErr">กรุณากรอกรหัสผ่าน</span>
+          </div>
+          <button type="submit" id="loginBtn" class="btn btn--primary" style="width:100%" aria-label="เข้าสู่ระบบ">
+            เข้าสู่ระบบ
+          </button>
+          <p class="text-muted text-small text-center mt-4">
+             บัญชีทดสอบ: admin@gmail.com , malee.staff@gmail.com , thanakrit@gmail.com , sponsor1@gmail.com / Password123!
+          </p>
+        </form>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="panel-register" class="tab-panel" role="tabpanel" aria-labelledby="tab-reg-btn">
+        <div id="regAlert" class="alert" role="alert" aria-live="polite"></div>
+        <form id="regForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label form-label--required" for="regFirst">ชื่อ</label>
+              <input class="form-control" type="text" id="regFirst" required aria-required="true" placeholder="ชื่อ">
+            </div>
+            <div class="form-group">
+              <label class="form-label form-label--required" for="regLast">นามสกุล</label>
+              <input class="form-control" type="text" id="regLast" required aria-required="true" placeholder="นามสกุล">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label form-label--required" for="regEmail">อีเมล</label>
+            <input class="form-control" type="email" id="regEmail" autocomplete="email" required aria-required="true" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label form-label--required" for="regCitizenId">เลขบัตรประชาชน</label>
+            <input class="form-control" type="text" id="regCitizenId" required aria-required="true"
+                   maxlength="13" inputmode="numeric" placeholder="1234567890123"
+                   oninput="this.value=this.value.replace(/\D/g,'')">
+            <span class="form-error" id="regCitizenErr">กรุณากรอกเลขบัตรประชาชน 13 หลัก</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPhone">เบอร์โทรศัพท์</label>
+            <input class="form-control" type="tel" id="regPhone" placeholder="0xx-xxx-xxxx">
+          </div>
+          <div class="form-group">
+            <label class="form-label form-label--required" for="regPassword">รหัสผ่าน (อย่างน้อย 8 ตัวอักษร)</label>
+            <input class="form-control" type="password" id="regPassword" required aria-required="true"
+                   minlength="8" placeholder="รหัสผ่าน">
+            <span class="form-error" id="regPassErr">รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label form-label--required" for="regRole">ประเภทบัญชี</label>
+            <select class="form-control" id="regRole" required aria-required="true">
+              <option value="general_user">ผู้ใช้ทั่วไป (รับเลี้ยงสุนัข)</option>
+              <option value="sponsor">ผู้สนับสนุน (Sponsor)</option>
+            </select>
+          </div>
+          <button type="submit" id="regBtn" class="btn btn--primary" style="width:100%" aria-label="สมัครสมาชิก">
+            สมัครสมาชิก
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+<script src="/js/login.js"></script>
+</body>
+</html>

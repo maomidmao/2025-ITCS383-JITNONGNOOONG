@@ -11,6 +11,7 @@ JITNONGNOONG/
 ├── designs/                        # D1 Design documents & diagrams
 │   └── JITNONGNOONG_D1_Design.md
 ├── implementations/
+<<<<<<< HEAD
 │   ├── backend/                    # Node.js / Express REST API
 │   │   ├── config/
 │   │   │   └── db.js               # MySQL connection pool
@@ -40,6 +41,33 @@ JITNONGNOONG/
 │       └── pages/
 │           ├── login.html
 │           └── dogs.html
+=======
+│   ├── src/
+│   │   ├── backend/                # Node.js / Express REST API
+│   │   │   ├── config/
+│   │   │   │   └── db.js           # MySQL connection pool
+│   │   │   ├── middleware/
+│   │   │   │   └── auth.js         # Session auth & role guards
+│   │   │   ├── routes/
+│   │   │   │   ├── auth.js         # POST /api/auth/*
+│   │   │   │   ├── dogs.js         # /api/dogs
+│   │   │   │   ├── favourites.js   # /api/favourites
+│   │   │   │   ├── adoptions.js    # /api/adoptions
+│   │   │   │   ├── checkups.js     # /api/checkups
+│   │   │   │   ├── verify.js       # /api/verify/*
+│   │   │   │   ├── sponsors.js     # /api/sponsors
+│   │   │   │   └── reports.js      # /api/reports/*
+│   │   │   ├── dog_adoption_db.sql # Database schema + seed data
+│   │   │   ├── server.js           # Main entry point
+│   │   │   └── .env.example
+│   │   └── frontend/               # Static HTML/CSS/JS frontend
+│   │       ├── css/
+│   │       ├── js/
+│   │       └── pages/
+│   └── tests/                      # Automated tests
+│   ├── package.json                # Build/config files
+│   └── package-lock.json
+>>>>>>> 25f0d6d (อย่าลืมที่จะเริ่ด)
 └── README.md                       # ← You are here
 ```
 
@@ -60,7 +88,11 @@ JITNONGNOONG/
 1. Open MySQL and run the schema + seed script:
 
 ```bash
+<<<<<<< HEAD
 mysql -u root -p < implementations/backend/dog_adoption_db.sql
+=======
+mysql -u root -p < implementations/src/backend/dog_adoption_db.sql
+>>>>>>> 25f0d6d (อย่าลืมที่จะเริ่ด)
 ```
 
 This creates the `dog_adoption_db` database with all tables and sample data.
@@ -70,8 +102,13 @@ This creates the `dog_adoption_db` database with all tables and sample data.
 ## 🔧 Backend Setup & Run
 
 ```bash
+<<<<<<< HEAD
 # 1. Navigate to backend folder
 cd implementations/backend
+=======
+# 1. Navigate to implementations folder
+cd implementations
+>>>>>>> 25f0d6d (อย่าลืมที่จะเริ่ด)
 
 # 2. Install dependencies
 npm install

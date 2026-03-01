@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JITNONGNOONG — ระบบรับเลี้ยงสุนัขออนไลน์">
+  <title>JITNONGNOONG — ระบบรับเลี้ยงสุนัข</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+  <header>
+    <nav class="nav" role="navigation" aria-label="เมนูหลัก">
+      <div class="nav__inner">
+        <a href="/" class="nav__logo" aria-label="JITNONGNOONG หน้าแรก">
+          <div class="nav__logo-icon" aria-hidden="true">🐾</div>JITNONGNOONG
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="/pages/dogs.html">สุนัขรอหาบ้าน</a></li>
+          <li><a href="#how-it-works">วิธีการรับเลี้ยง</a></li>
+        </ul>
+        <div class="nav__user" id="navUser">
+          <a href="/pages/login.html" class="btn btn--outline btn--sm">เข้าสู่ระบบ</a>
+          <a href="/pages/login.html?tab=register" class="btn btn--primary btn--sm">สมัครสมาชิก</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 class="hero__title" id="hero-title">ให้น้องสุนัขมีบ้านที่รัก</h1>
+      <p class="hero__sub">ระบบรับเลี้ยงสุนัขขององค์กรไม่แสวงหาผลกำไร ครบครัน โปร่งใส ดูแลต่อเนื่อง</p>
+      <div class="hero__actions">
+        <a href="/pages/dogs.html" class="btn btn--primary btn--lg">🐶 ดูสุนัขรอหาบ้าน</a>
+        <a href="#how-it-works" class="btn btn--outline btn--lg">วิธีการรับเลี้ยง</a>
+      </div>
+    </section>
+    <div class="sponsor-banner" aria-label="ผู้สนับสนุน">
+      <div class="sponsor-banner__inner">
+        <span class="sponsor-banner__label">ผู้สนับสนุน</span>
+        <div id="sponsorLogos" class="sponsor-billboards"><div class="sponsor-empty">กำลังโหลด...</div></div>
+      </div>
+    </div>
+    <section class="section" aria-labelledby="dogs-heading">
+      <div class="section__header">
+        <p class="section__eyebrow">น้องรอหาบ้าน</p>
+        <h2 class="section__title" id="dogs-heading">สุนัขพร้อมรับเลี้ยง</h2>
+        <p class="section__desc">ทุกตัวผ่านการตรวจสุขภาพ ฉีดวัคซีน และฝึกนิสัยพื้นฐานแล้ว</p>
+      </div>
+      <div class="dogs-grid" id="dogsGrid" aria-label="รายการสุนัข" style="max-width:var(--content-max);margin:0 auto">
+        <div class="loading-overlay" style="grid-column:1/-1"><span class="spinner"></span> กำลังโหลด...</div>
+      </div>
+      <div class="text-center mt-6">
+        <a href="/pages/dogs.html" class="btn btn--primary">ดูสุนัขทั้งหมด →</a>
+      </div>
+    </section>
+    <section class="section section--alt" id="how-it-works" aria-labelledby="how-heading">
+      <div class="section__header">
+        <p class="section__eyebrow">ขั้นตอน</p>
+        <h2 class="section__title" id="how-heading">วิธีการรับเลี้ยงสุนัข</h2>
+        <p class="section__desc">ง่าย 4 ขั้นตอน เพื่อให้น้องได้บ้านที่ดีที่สุด</p>
+      </div>
+      <div class="steps-grid" role="list">
+        <article class="step" role="listitem"><div class="step__icon" aria-hidden="true">🔍</div><p class="step__num">ขั้นที่ 1</p><h3 class="step__title">ค้นหาสุนัข</h3><p class="step__desc">เลือกดูสุนัขที่คุณชอบ อ่านประวัติ บุคลิก และสุขภาพ</p></article>
+        <article class="step" role="listitem"><div class="step__icon" aria-hidden="true">📝</div><p class="step__num">ขั้นที่ 2</p><h3 class="step__title">ยื่นคำขอ</h3><p class="step__desc">กรอกแบบฟอร์มรับเลี้ยงพร้อมข้อมูลที่อยู่</p></article>
+        <article class="step" role="listitem"><div class="step__icon" aria-hidden="true">✅</div><p class="step__num">ขั้นที่ 3</p><h3 class="step__title">ตรวจสอบคุณสมบัติ</h3><p class="step__desc">ตรวจประวัติอาชญากรรม บัญชีดำ และข้อมูลประชาชน</p></article>
+        <article class="step" role="listitem"><div class="step__icon" aria-hidden="true">🏠</div><p class="step__num">ขั้นที่ 4</p><h3 class="step__title">รับน้องกลับบ้าน</h3><p class="step__desc">นัดรับน้อง พร้อมติดตามผลทุกเดือนเป็นเวลา 1 ปี</p></article>
+      </div>
+    </section>
+  </main>
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div><div class="footer-brand">🐾 JITNONGNOONG</div><p style="font-size:.875rem;line-height:1.7">องค์กรไม่แสวงหาผลกำไร ช่วยสุนัขไทยมีบ้านที่อบอุ่น</p></div>
+        <div><p class="footer-col-title">ติดต่อ</p><ul class="footer-links"><li><a href="mailto:contact@jitnongnoong.org">contact@jitnongnoong.org</a></li><li><a href="tel:021112222">02-111-2222</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2025 JITNONGNOONG Thailand</span><span>♿ WCAG 2.1 AA</span></div>
+    </div>
+  </footer>
+  <script src="/js/api.js"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>

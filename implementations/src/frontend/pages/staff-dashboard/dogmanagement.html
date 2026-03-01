@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>จัดการโปรไฟล์สุนัข — JITNONGNOONG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/staff-dashboard.css">
+</head>
+
+<body>
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<nav class="nav" aria-label="แถบนำทางหลัก"><div class="nav__inner"><a href="/" class="nav__logo" aria-label="JITNONGNOONG หน้าแรก"><div class="nav__logo-icon" aria-hidden="true">🐾</div>JITNONGNOONG</a><ul class="nav__links" role="list"><li><a href="/pages/dogs.html">สุนัขรอหาบ้าน</a></li></ul><div class="nav__user"><span class="nav__user-badge">เจ้าหน้าที่</span><span class="text-small text-muted" id="staffName"></span><button onclick="doLogout()" class="btn btn--ghost btn--sm">ออกจากระบบ</button></div></div></nav>
+<div class="dashboard-layout">
+  <nav class="sidebar" aria-label="เมนูเจ้าหน้าที่">
+    <p class="sidebar__section-label">เมนู</p>
+    <ul class="sidebar__nav" role="list">
+      <li><a class="sidebar__link" data-link-id="dogs" href="/pages/staff-dashboard/dogmanagement.html"><span class="sidebar__icon" aria-hidden="true">🐕</span> จัดการสุนัข</a></li>
+      <li><a class="sidebar__link" data-link-id="requests" href="/pages/staff-dashboard/adoption-req.html"><span class="sidebar__icon" aria-hidden="true">📋</span> คำขอรับเลี้ยง</a></li>
+      <li><a class="sidebar__link" data-link-id="appointments" href="/pages/staff-dashboard/appointments.html"><span class="sidebar__icon" aria-hidden="true">📅</span> นัดหมายรับสุนัข</a></li>
+      <li><a class="sidebar__link" data-link-id="checkups" href="/pages/staff-dashboard/checkups.html"><span class="sidebar__icon" aria-hidden="true">📞</span> ติดตามรายเดือน</a></li>
+      <li><a class="sidebar__link" data-link-id="verify" href="/pages/staff-dashboard/verify.html"><span class="sidebar__icon" aria-hidden="true">🔍</span> ตรวจสอบผู้รับเลี้ยง</a></li>
+    </ul>
+  </nav>
+  <main id="main" class="main-content">
+    <div id="gAlert" class="alert" role="alert" aria-live="polite"></div>
+    <section id="section-dogs">
+      <div class="flex-between mb-6">
+        <h2 class="section-title" style="margin:0">จัดการโปรไฟล์สุนัข</h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn--ghost btn--sm" id="dogSortBtn" onclick="toggleDogSort()">ล่าสุด ↑↓</button>
+          <button class="btn btn--primary" onclick="openDogModal()">+ เพิ่มสุนัข</button>
+        </div>
+      </div>
+      <div class="table-wrapper"><table class="table" aria-label="รายการสุนัข"><thead><tr><th>DogId</th><th>ชื่อ</th><th>สายพันธุ์</th><th>อายุ</th><th>เพศ</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead><tbody id="dogsTbody"><tr><td colspan="7" class="text-center text-muted">กำลังโหลด...</td></tr></tbody></table></div>
+    </section>
+  </main>
+</div>
+<div class="modal-overlay" id="dogModal" role="dialog" aria-modal="true" aria-labelledby="dogModalTitle"><div class="modal" style="max-width:600px"><div class="modal__header"><h2 class="modal__title" id="dogModalTitle">เพิ่มสุนัข</h2><button class="modal__close" onclick="closeDogModal()" aria-label="ปิด">✕</button></div><div class="modal__body"><div id="dogAlert" class="alert" role="alert"></div><form id="dogForm" novalidate><input type="hidden" id="editDogId"><div class="form-row"><div class="form-group"><label class="form-label form-label--required" for="dName">ชื่อ</label><input class="form-control" type="text" id="dName" required></div><div class="form-group"><label class="form-label" for="dBreed">สายพันธุ์</label><input class="form-control" type="text" id="dBreed"></div></div><div class="form-row"><div class="form-group"><label class="form-label form-label--required" for="dAge">อายุ (ปี)</label><input class="form-control" type="number" id="dAge" min="0" required></div><div class="form-group"><label class="form-label form-label--required" for="dGender">เพศ</label><select class="form-control" id="dGender" required><option value="male">ผู้</option><option value="female">เมีย</option></select></div></div><div class="form-row"><div class="form-group"><label class="form-label" for="dColor">สี</label><input class="form-control" type="text" id="dColor"></div><div class="form-group"><label class="form-label" for="dWeight">น้ำหนัก (กก.)</label><input class="form-control" type="number" step="0.1" id="dWeight"></div></div><div class="form-group"><label class="form-label" for="dMed">ประวัติสุขภาพ</label><textarea class="form-control" id="dMed" rows="2"></textarea></div><div class="form-group"><label class="form-label" for="dTreat">ประวัติการรักษา</label><textarea class="form-control" id="dTreat" rows="3"></textarea></div><div class="form-group"><label class="form-label" for="dTrain">ประวัติการฝึก</label><textarea class="form-control" id="dTrain" rows="3"></textarea></div><div class="form-group"><label class="form-label" for="dImg">รูปภาพ</label><input class="form-control" type="file" id="dImg" accept="image/*"></div><button type="submit" id="dogSaveBtn" class="btn btn--primary" style="width:100%">บันทึก</button></form></div></div></div>
+<script src="/js/api.js"></script>
+<script src="/js/staff-common.js"></script>
+<script src="/js/staff-dogmanagement.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+/* ── Checkup record card ── */
+.chk-record {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.chk-record:last-child { 
+  border-bottom: none; 
+}
+
+.chk-record__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.chk-record__note {
+  font-size: 0.9rem;
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-2);
+}

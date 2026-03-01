@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายการโปรด — JITNONGNOONG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/user-dashboard.css">
+</head>
+<body>
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<nav class="nav" aria-label="แถบนำทางหลัก"><div class="nav__inner"><a href="/" class="nav__logo" aria-label="JITNONGNOONG หน้าแรก"><div class="nav__logo-icon" aria-hidden="true">🐾</div>JITNONGNOONG</a><ul class="nav__links" role="list"><li><a href="/pages/dogs.html">สุนัขรอหาบ้าน</a></li></ul><div class="nav__user"><span class="nav__user-badge" id="roleLabel">ผู้ใช้</span><span class="text-small text-muted" id="userLabel"></span><button onclick="doLogout()" class="btn btn--ghost btn--sm">ออกจากระบบ</button></div></div></nav>
+<div class="dashboard-layout">
+  <nav class="sidebar" aria-label="เมนูผู้ใช้"><p class="sidebar__section-label">เมนู</p><ul class="sidebar__nav" role="list"><li><a class="sidebar__link" data-link-id="fav" href="/pages/user-dashboard/favourites.html"><span class="sidebar__icon" aria-hidden="true">❤️</span> รายการโปรด</a></li><li><a class="sidebar__link" data-link-id="req" href="/pages/user-dashboard/requests.html"><span class="sidebar__icon" aria-hidden="true">📋</span> คำขอของฉัน</a></li><li><a class="sidebar__link" data-link-id="pickup" href="/pages/user-dashboard/pickup.html"><span class="sidebar__icon" aria-hidden="true">📅</span> นัดรับสุนัข</a></li><li><a class="sidebar__link" data-link-id="chk" href="/pages/user-dashboard/checkups.html"><span class="sidebar__icon" aria-hidden="true">📸</span> การติดตาม</a></li></ul></nav>
+  <main id="main" class="main-content">
+    <h2 class="section-title" style="margin-top:0">รายการโปรด</h2>
+    <div id="favAlert" class="alert" role="alert" aria-live="polite"></div>
+    <div class="dogs-grid" id="favGrid" aria-live="polite"><div class="loading-overlay" style="grid-column:1/-1"><span class="spinner"></span> กำลังโหลด...</div></div>
+  </main>
+</div>
+<div class="modal-overlay" id="adoptModal" role="dialog" aria-modal="true" aria-labelledby="adoptTitle"><div class="modal"><div class="modal__header"><h2 class="modal__title" id="adoptTitle">ยื่นคำขอรับเลี้ยง</h2><button class="modal__close" onclick="closeAdopt()" aria-label="ปิด">✕</button></div><div class="modal__body"><div id="adoptAlert" class="alert" role="alert" aria-live="polite"></div><p class="text-muted text-small mb-6">สุนัข: <strong id="adoptDogName"></strong></p><form id="adoptForm" novalidate><input type="hidden" id="adoptDogId"><div class="form-row"><div class="form-group"><label class="form-label form-label--required" for="adoptName">ชื่อ-นามสกุล</label><input class="form-control" type="text" id="adoptName" required></div><div class="form-group"><label class="form-label form-label--required" for="adoptPhone">เบอร์โทร</label><input class="form-control" type="tel" id="adoptPhone" required></div></div><div class="form-group"><label class="form-label form-label--required" for="adoptEmail">อีเมล</label><input class="form-control" type="email" id="adoptEmail" required></div><div class="form-group"><label class="form-label form-label--required" for="adoptAddress">ที่อยู่</label><textarea class="form-control" id="adoptAddress" required rows="2"></textarea></div><div class="form-group"><label class="form-label form-label--required" for="adoptLiving">ประเภทที่พัก</label><select class="form-control" id="adoptLiving" required><option value="house">บ้านเดี่ยว</option><option value="condo">คอนโด</option><option value="apartment">อพาร์ตเมนต์</option><option value="townhouse">ทาวน์เฮาส์</option></select></div><div class="form-group"><label class="form-label" for="adoptMsg">เหตุผลที่ต้องการรับเลี้ยง</label><textarea class="form-control" id="adoptMsg" rows="2"></textarea></div><button type="submit" id="adoptBtn" class="btn btn--primary" style="width:100%">ยื่นคำขอ</button></form></div></div></div>
+<script src="/js/api.js"></script>
+<script src="/js/user-common.js"></script>
+<script src="/js/user-favourites.js"></script>
+</body>
+</html>
