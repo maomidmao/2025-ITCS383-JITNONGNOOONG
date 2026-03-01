@@ -1,0 +1,122 @@
+.detail-panel {
+    position:fixed;
+    top:0;right:-520px;
+    width:500px;
+    max-width:100vw;
+    height:100vh;
+    background:var(--color-white);
+    border-left:1px solid var(--color-gray-200);
+    box-shadow:-8px 0 32px rgba(0,0,0,.12);
+    overflow-y:auto;z-index:300;
+    transition:right .3s ease;
+    display:flex;
+    flex-direction:column
+}
+
+.detail-panel.open {
+    right:0
+}
+
+.detail-panel__img {
+    width:100%;
+    height:240px;
+    background:var(--color-primary-100);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:5rem
+}
+
+.detail-panel__img img {
+    width:100%;
+    height:100%;
+    object-fit:cover
+}
+
+.detail-panel__header {
+    padding:var(--space-5) var(--space-6);
+    border-bottom:1px solid var(--color-gray-100);
+    display:flex;
+    align-items:center;
+    justify-content:space-between
+}
+
+.detail-panel__title{
+    font-size:1.3rem;
+    font-weight:800
+}
+
+.detail-panel__body {
+    padding:var(--space-5);
+    flex:1
+}
+
+.detail-panel__footer { 
+    padding:var(--space-5) var(--space-6);
+    border-top:1px solid var(--color-gray-100)
+}
+
+.detail-action{
+    display:flex;
+    justify-content:flex-start;
+    align-items:center;
+    margin-bottom:var(--space-5)
+}
+.detail-section {
+    margin-bottom:var(--space-5)
+}
+
+.detail-section__title {
+    font-size:.9rem;
+    font-weight:800;
+    color:var(--color-gray-600);
+    margin-bottom:var(--space-3)
+}
+
+.detail-kv {
+    border:1px solid var(--color-gray-100);
+    border-radius:12px;
+    background:var(--color-gray-50)
+}
+
+.detail-item {
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:var(--space-3);
+    padding:10px 14px;
+    border-bottom:1px solid var(--color-gray-100);
+    font-size:1rem;align-items:center
+}
+
+.detail-item:last-child {
+    border-bottom:none
+}
+
+.detail-item__label {
+    color:var(--color-gray-500);
+    font-weight:600
+}
+
+.detail-item__val {
+    font-weight:700
+}
+
+.detail-text {
+    font-size:1rem;
+    line-height:1.65;
+    background:var(--color-gray-50);
+    padding:12px 14px;
+    border-radius:12px;
+    border:1px solid var(--color-gray-100)
+}
+
+.panel-overlay {
+    display:none;
+    position:fixed;
+    inset:0;background:rgba(0,0,0,.4);
+    z-index:299
+}
+
+.panel-overlay.open {
+    display:block
+}

@@ -1,0 +1,22 @@
+.banner-preview { 
+    max-width: 100%; 
+    border: 2px dashed var(--color-gray-200); 
+    border-radius: var(--radius); 
+    padding: var(--space-5); 
+    text-align: center; 
+    margin-top: var(--space-4);
+}
+
+.banner-preview img { 
+    max-width: 100%; 
+    border-radius: var(--radius-sm);
+}
+
+.banner-rule { 
+    background: var(--color-primary-50); 
+    border: 1px solid var(--color-primary-100); 
+    border-radius: var(--radius-sm); 
+    padding: var(--space-4); 
+    font-size: .875rem; 
+    margin-bottom: var(--space-6); 
+}

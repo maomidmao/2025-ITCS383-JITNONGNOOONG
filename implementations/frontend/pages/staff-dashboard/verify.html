@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ตรวจสอบผู้รับเลี้ยง — JITNONGNOONG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/staff-dashboard.css">
+</head>
+
+<body>
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<nav class="nav" aria-label="แถบนำทางหลัก"><div class="nav__inner"><a href="/" class="nav__logo" aria-label="JITNONGNOONG หน้าแรก"><div class="nav__logo-icon" aria-hidden="true">🐾</div>JITNONGNOONG</a><ul class="nav__links" role="list"><li><a href="/pages/dogs.html">สุนัขรอหาบ้าน</a></li></ul><div class="nav__user"><span class="nav__user-badge">เจ้าหน้าที่</span><span class="text-small text-muted" id="staffName"></span><button onclick="doLogout()" class="btn btn--ghost btn--sm">ออกจากระบบ</button></div></div></nav>
+<div class="dashboard-layout">
+  <nav class="sidebar" aria-label="เมนูเจ้าหน้าที่"><p class="sidebar__section-label">เมนู</p><ul class="sidebar__nav" role="list"><li><a class="sidebar__link" data-link-id="dogs" href="/pages/staff-dashboard/dogmanagement.html"><span class="sidebar__icon" aria-hidden="true">🐕</span> จัดการสุนัข</a></li><li><a class="sidebar__link" data-link-id="requests" href="/pages/staff-dashboard/adoption-req.html"><span class="sidebar__icon" aria-hidden="true">📋</span> คำขอรับเลี้ยง</a></li><li><a class="sidebar__link" data-link-id="appointments" href="/pages/staff-dashboard/appointments.html"><span class="sidebar__icon" aria-hidden="true">📅</span> นัดหมายรับสุนัข</a></li><li><a class="sidebar__link" data-link-id="checkups" href="/pages/staff-dashboard/checkups.html"><span class="sidebar__icon" aria-hidden="true">📞</span> ติดตามรายเดือน</a></li><li><a class="sidebar__link" data-link-id="verify" href="/pages/staff-dashboard/verify.html"><span class="sidebar__icon" aria-hidden="true">🔍</span> ตรวจสอบผู้รับเลี้ยง</a></li></ul></nav>
+  <main id="main" class="main-content">
+    <h2 class="section-title">ตรวจสอบคุณสมบัติผู้รับเลี้ยง</h2>
+    <div class="card" style="max-width:560px"><div class="card__body"><div id="vAlert" class="alert" role="alert" aria-live="polite"></div><div class="form-group"><label class="form-label form-label--required" for="vCitizenId">เลขบัตรประชาชน (13 หลัก)</label><input class="form-control" type="text" id="vCitizenId" maxlength="13" pattern="\d{13}" placeholder="กรอกเลขบัตรประชาชน 13 หลัก"></div><div class="form-group"><label class="form-label" for="vAdoptionId">หมายเลขคำขอ (ถ้ามี — เพื่อบันทึกผลตรวจสอบ)</label><input class="form-control" type="number" id="vAdoptionId" placeholder="ไม่บังคับ"></div><button class="btn btn--primary" onclick="runVerifyAll()" id="vBtn"> ตรวจสอบทั้งหมด</button><div id="vResults" style="margin-top:var(--space-6);display:none"><div id="vCard-citizen" class="verify-card"></div><div id="vCard-criminal" class="verify-card"></div><div id="vCard-blacklist" class="verify-card"></div><div id="vCard-summary" class="verify-card verify-card--summary"></div></div></div></div>
+  </main>
+</div>
+<script src="/js/api.js"></script>
+<script src="/js/staff-common.js"></script>
+<script src="/js/staff-verify.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แดชบอร์ดผู้สนับสนุน — JITNONGNOONG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/sponsor-dashboard.css">
+</head>
+
+<body>
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<nav class="nav"><div class="nav__inner">
+  <a href="/" class="nav__logo"><div class="nav__logo-icon">🐾</div>JITNONGNOONG</a>
+  <div class="nav__user">
+    <span class="nav__user-badge">ผู้สนับสนุน</span>
+    <span class="text-small text-muted" id="spName"></span>
+    <a href="/pages/sponsor-dashboard.html" id="spDashBtn" class="btn btn--outline btn--sm">แดชบอร์ด</a>
+    <button onclick="doLogout()" class="btn btn--ghost btn--sm">ออกจากระบบ</button>
+  </div>
+</div></nav>
+
+<div class="page-header"><div class="page-header__inner">
+  <h1 class="page-header__title">แดชบอร์ดผู้สนับสนุน</h1>
+  <p class="page-header__sub">จัดการแบนเนอร์ผู้สนับสนุนของคุณ</p>
+</div></div>
+
+<main id="main" class="page-container" style="max-width:700px">
+  <div id="spAlert" class="alert" role="alert" aria-live="polite"></div>
+
+  <div class="banner-rule">
+    <strong> กฎการแสดงแบนเนอร์:</strong> แบนเนอร์มีขนาดเดียวสำหรับทุกระดับการบริจาค ไม่ว่าจะบริจาคเท่าไรก็ตาม
+    แบนเนอร์ของคุณจะปรากฏบนหน้าแรกของเว็บไซต์เมื่อโปรไฟล์ได้รับการอนุมัติ
+  </div>
+
+  <div class="card mb-6">
+    <div class="card__header"><h2 class="card__title">โปรไฟล์ผู้สนับสนุน</h2></div>
+    <div class="card__body">
+      <form id="spForm" novalidate>
+        <div class="form-group">
+          <label class="form-label form-label--required" for="donationAmount">จำนวนเงินบริจาค (บาท)</label>
+          <input class="form-control" type="number" id="donationAmount" min="1" step="0.01" required aria-required="true">
+          <span class="form-hint">ระบุจำนวนเงินที่ต้องการบริจาค</span>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--color-gray-100);margin:var(--space-6) 0">
+        <p class="text-muted text-small mb-6">อัปโหลดแบนเนอร์ (แนะนำขนาด 970×250px เพื่อให้เห็นชัดเจน)</p>
+
+        <div class="form-group">
+          <label class="form-label" for="bannerFile">แบนเนอร์ผู้สนับสนุน</label>
+          <input class="form-control" type="file" id="bannerFile" accept="image/*" onchange="previewImage(this,'bannerPreview')">
+          <div id="bannerPreview" class="banner-preview" style="display:none"></div>
+        </div>
+
+        <button type="submit" id="spBtn" class="btn btn--primary">บันทึกข้อมูลและอัปโหลดแบนเนอร์</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Current sponsor info display -->
+  <div class="card" id="currentSponsorCard" style="display:none">
+    <div class="card__header"><h2 class="card__title">ข้อมูลปัจจุบัน</h2></div>
+    <div class="card__body" id="currentSponsorBody"></div>
+  </div>
+</main>
+
+<script src="/js/api.js"></script>
+<script src="/js/sponsor-dashboard.js"></script>
+</body>
+</html>

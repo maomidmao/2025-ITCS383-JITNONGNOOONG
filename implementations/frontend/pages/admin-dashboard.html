@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — JITNONGNOONG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+<nav class="nav"><div class="nav__inner">
+  <a href="/" class="nav__logo"><div class="nav__logo-icon">🐾</div>JITNONGNOONG</a>
+  <div class="nav__user">
+    <span class="nav__user-badge">ผู้ดูแลระบบ</span>
+    <span class="text-small text-muted" id="adminName"></span>
+    <a href="/pages/admin-dashboard.html" class="btn btn--outline btn--sm">แดชบอร์ด</a>
+    <button onclick="doLogout()" class="btn btn--ghost btn--sm">ออกจากระบบ</button>
+  </div>
+</div></nav>
+
+<div class="dashboard-layout">
+  <nav class="sidebar" aria-label="เมนูผู้ดูแลระบบ">
+    <p class="sidebar__section-label">รายงาน</p>
+    <ul class="sidebar__nav" role="list">
+      <li><a class="sidebar__link active" href="#" id="link-summary"  onclick="showSection('summary',this)"><span class="sidebar__icon">📊</span> สรุปภาพรวม</a></li>
+      <li><a class="sidebar__link"        href="#" id="link-adopters" onclick="showSection('adopters',this)"><span class="sidebar__icon">👤</span> ผู้รับเลี้ยงที่มีศักยภาพ</a></li>
+    </ul>
+  </nav>
+
+  <main id="main" class="main-content">
+    <!-- SUMMARY -->
+    <section id="section-summary">
+      <h2 class="section-title">สรุปภาพรวมระบบ</h2>
+      <div id="summaryContent">
+        <div class="loading-overlay"><span class="spinner"></span> กำลังโหลด...</div>
+      </div>
+    </section>
+
+    <!-- POTENTIAL ADOPTERS -->
+    <section id="section-adopters" style="display:none">
+      <h2 class="section-title">ผู้รับเลี้ยงที่มีศักยภาพ</h2>
+      <div class="table-wrapper">
+        <table class="table" aria-label="รายชื่อผู้รับเลี้ยง">
+          <thead><tr>
+            <th>ชื่อ</th><th>อีเมล</th><th>เบอร์โทร</th>
+            <th>ที่พัก</th><th>ตรวจสอบ</th><th>คำขอทั้งหมด</th>
+          </tr></thead>
+          <tbody id="adoptersTbody"><tr><td colspan="6" class="text-center text-muted">กำลังโหลด...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/admin-dashboard.js"></script>
+</body>
+</html>
