@@ -233,5 +233,37 @@ All seed accounts use the password: **`Password123!`**
 
 ---
 
+## Workflow
+- port 9000 visibility => public
+- then sonar
+```bash
+docker pull sonarqube:community
+
+docker stop sonarqube 2>/dev/null || true
+docker rm sonarqube 2>/dev/null || true
+
+docker run -d --name sonarqube \
+  -p 9000:9000 \
+  -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true \
+  sonarqube:community
+```
+- go to sonar
+    - Username: admin
+    - Password: admin
+- create project locally
+    - Project display name: JITNONGNOOONG1
+    - Project key: JITNONGNOOONG1
+    - branch: master
+- follow instance's default
+- with github actions
+- go to repo setting > secrets and variables
+- update SONAR_TOKEN with generated token
+- update SONAR_HOST_URL with new URL
+if there's an update:
+- git add .
+- git commit
+- git push
+
+
 *JITNONGNOONG v1.0 — D2 Functional Service Release*
 >>>>>>> main
