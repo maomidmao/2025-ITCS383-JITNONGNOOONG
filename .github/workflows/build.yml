@@ -19,7 +19,9 @@ jobs:
         with:
           node-version: '20'
       - run: npm install
+        working-directory: implementations
       - run: npm test
+        working-directory: implementations
       - uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
