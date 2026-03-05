@@ -1,0 +1,33 @@
+const request = require('supertest');
+const app = require('../app'); // Adjust the path as necessary
+
+describe('Appointments Routes', () => {
+    test('GET /appointments should return all appointments', async () => {
+        const response = await request(app).get('/appointments');
+        expect(response.statusCode).toBe(200);
+        expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    test('POST /appointments should create a new appointment', async () => {
+        const newAppointment = { date: '2023-10-01', time: '10:00', description: 'Checkup' };
+        const response = await request(app).post('/appointments').send(newAppointment);
+        expect(response.statusCode).toBe(201);
+        expect(response.body).toHaveProperty('id');
+    });
+
+    test('GET /appointments/:id should return a specific appointment', async () => {
+        const response = await request(app).get('/appointments/1'); // Adjust ID as necessary
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('id', 1);
+    });
+
+    test('DELETE /appointments/:id should delete a specific appointment', async () => {
+        const response = await request(app).delete('/appointments/1'); // Adjust ID as necessary
+        expect(response.statusCode).toBe(204);
+    });
+
+    test('GET /appointments should return 404 for non-existent appointment', async () => {
+        const response = await request(app).get('/appointments/999'); // Non-existent ID
+        expect(response.statusCode).toBe(404);
+    });
+});

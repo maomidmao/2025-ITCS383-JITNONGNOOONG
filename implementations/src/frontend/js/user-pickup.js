@@ -1,3 +1,30 @@
+function getPickupBadge(a) {
+  const isCompleted = a.status === 'completed';
+  const isScheduled = a.status === 'scheduled';
+  const isStaffConfirmed = !!a.staffConfirmed;
+  const hasDate = a.deliveryDate && !isNaN(new Date(a.deliveryDate));
+  if (isCompleted) return { label: 'จัดส่งแล้ว', type: 'available' };
+  if (isScheduled && hasDate) {
+    return { label: isStaffConfirmed ? 'ยืนยันวันนัดรับ' : 'รอยืนยันวันนัด', type: isStaffConfirmed ? 'pending' : 'in_treatment' };
+  }
+  return { label: 'รอกำหนดวัน', type: 'in_treatment' };
+}
+
+function getPickupAction(a) {
+  const isCompleted = a.status === 'completed';
+  const isScheduled = a.status === 'scheduled';
+  const isStaffConfirmed = !!a.staffConfirmed;
+  const needsDate = !isCompleted && (!a.id || !a.deliveryDate);
+  const hasDate = a.deliveryDate && !isNaN(new Date(a.deliveryDate));
+  if (isCompleted) {
+    return '<span class="badge badge--available">✅ รับสุนัขแล้ว</span>';
+  } else if (!needsDate && hasDate) {
+    return `<div style="display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap"><span class="text-small text-muted">${isStaffConfirmed ? 'ยืนยันวันนัดรับแล้ว' : 'วันที่ที่เลือก'}: <strong>${fmtDate(a.deliveryDate)}</strong></span>${isStaffConfirmed ? '' : `<button class="btn btn--ghost btn--sm" onclick="openPickupEdit(${a.id || 0}, ${a.adoptionId}, '${a.deliveryDate}')">✏️ เปลี่ยนวัน</button>`}</div>`;
+  } else {
+    return `<button class="btn btn--primary btn--sm" onclick="openPickupModal(${a.id || 0}, ${a.adoptionId}, '${a.dogName}')">📅 เลือกวันรับน้อง</button>`;
+  }
+}
+
 async function loadPickup() {
   const container = document.getElementById('pickupList');
   container.innerHTML = '<div class="loading-overlay"><span class="spinner"></span> กำลังโหลด...</div>';
@@ -8,22 +35,9 @@ async function loadPickup() {
       return;
     }
     container.innerHTML = appointments.map((a) => {
-      const isCompleted = a.status === 'completed';
-      const isScheduled = a.status === 'scheduled';
-      const isStaffConfirmed = !!a.staffConfirmed;
-      const needsDate = !isCompleted && (!a.id || !a.deliveryDate);
-      const hasDate = a.deliveryDate && !isNaN(new Date(a.deliveryDate));
-      const badgeLabel = isCompleted ? 'จัดส่งแล้ว' : (isScheduled && hasDate ? (isStaffConfirmed ? 'ยืนยันวันนัดรับ' : 'รอยืนยันวันนัด') : 'รอกำหนดวัน');
-      const badgeType = isCompleted ? 'available' : (isScheduled && hasDate ? (isStaffConfirmed ? 'pending' : 'in_treatment') : 'in_treatment');
-      let actionHtml;
-      if (isCompleted) {
-        actionHtml = '<span class="badge badge--available">✅ รับสุนัขแล้ว</span>';
-      } else if (!needsDate && hasDate) {
-        actionHtml = `<div style="display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap"><span class="text-small text-muted">${isStaffConfirmed ? 'ยืนยันวันนัดรับแล้ว' : 'วันที่ที่เลือก'}: <strong>${fmtDate(a.deliveryDate)}</strong></span>${isStaffConfirmed ? '' : `<button class="btn btn--ghost btn--sm" onclick="openPickupEdit(${a.id || 0}, ${a.adoptionId}, '${a.deliveryDate}')">✏️ เปลี่ยนวัน</button>`}</div>`;
-      } else {
-        actionHtml = `<button class="btn btn--primary btn--sm" onclick="openPickupModal(${a.id || 0}, ${a.adoptionId}, '${a.dogName}')">📅 เลือกวันรับน้อง</button>`;
-      }
-      return `<div class="card" style="margin-bottom:var(--space-4)"><div class="card__body" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4)"><div><p style="font-weight:600;margin-bottom:var(--space-1)">🐕 ${a.dogName || '—'}</p><span class="badge badge--${badgeType}">${badgeLabel}</span></div><div>${actionHtml}</div></div></div>`;
+      const badge = getPickupBadge(a);
+      const actionHtml = getPickupAction(a);
+      return `<div class="card" style="margin-bottom:var(--space-4)"><div class="card__body" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4)"><div><p style="font-weight:600;margin-bottom:var(--space-1)">🐕 ${a.dogName || '—'}</p><span class="badge badge--${badge.type}">${badge.label}</span></div><div>${actionHtml}</div></div></div>`;
     }).join('');
   } catch (err) {
     console.error('loadPickup:', err);

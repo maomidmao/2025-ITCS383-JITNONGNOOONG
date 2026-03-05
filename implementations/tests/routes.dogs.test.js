@@ -106,3 +106,212 @@ test('POST /dogs/:id/trainings returns 404 when dog not found', async () => {
   assert.equal(res.statusCode, 404);
   assert.deepEqual(res.body, { message: 'ไม่พบสุนัข' });
 });
+
+/* ── Additional coverage tests ── */
+
+test('GET /dogs with breed, search, and gender filters', async () => {
+  const { db } = createDbMockQueue([
+    [[{
+      DogId: 2, DogName: 'Buddy', Age: 1, breed: 'Poodle', gender: 'FEMALE',
+      color: 'White', medical_profile: 'ok', treatment_process: 'done',
+      training_status: 'trained', image_url: '/img/b.jpg', DogStatus: 'PENDING',
+      staff_name: 'Admin', created_at: '2026-02-01',
+    }]],
+  ]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'get', '/');
+  const res = await runHandlers(handlers, createReq({
+    query: { breed: 'Poodle', search: 'Buddy', gender: 'female' },
+  }));
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.dogs[0].gender, 'female');
+  assert.equal(res.body.dogs[0].breed, 'Poodle');
+});
+
+test('GET /dogs/:id returns dog when found', async () => {
+  const { db } = createDbMockQueue([
+    [[{
+      DogId: 5, DogName: 'Rex', Age: 4, breed: 'Lab', gender: 'MALE',
+      color: 'Golden', medical_profile: null, treatment_process: null,
+      training_status: null, image_url: null, DogStatus: 'AVAILABLE',
+      staff_name: null, created_at: '2026-01-01',
+    }]],
+  ]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'get', '/:id');
+  const res = await runHandlers(handlers, createReq({ params: { id: '5' } }));
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.dog.name, 'Rex');
+  assert.equal(res.body.dog.id, 5);
+});
+
+test('POST /dogs returns 400 when name missing', async () => {
+  const { db } = createDbMockQueue([]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = pickHandlers(router, 'post', '/', [0, 2]);
+  const req = createReq({
+    body: { gender: 'male' },
+    session: { user: { UserId: 7, UserRole: 'STAFF' } },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 400);
+  assert.match(res.body.message, /กรุณาระบุชื่อสุนัข/);
+});
+
+test('PUT /dogs/:id updates fields successfully', async () => {
+  const { db } = createDbMockQueue([[{}]]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = pickHandlers(router, 'put', '/:id', [0, 2]);
+  const req = createReq({
+    params: { id: '1' },
+    session: { user: { UserRole: 'ADMIN' } },
+    body: { dogName: 'NewName', age: '5', breed: 'Lab', gender: 'MALE', color: 'Brown', medical_profile: 'ok', treatment_process: 'done', training_status: 'good', status: 'available' },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { message: 'อัปเดตข้อมูลสำเร็จ' });
+});
+
+test('GET /dogs returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'get', '/');
+  const res = await runHandlers(handlers, createReq());
+  assert.equal(res.statusCode, 500);
+});
+
+test('GET /dogs/:id returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'get', '/:id');
+  const res = await runHandlers(handlers, createReq({ params: { id: '1' } }));
+  assert.equal(res.statusCode, 500);
+});
+
+test('POST /dogs returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = pickHandlers(router, 'post', '/', [0, 2]);
+  const req = createReq({
+    body: { name: 'Crash', gender: 'male' },
+    session: { user: { UserId: 7, UserRole: 'STAFF' } },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 500);
+});
+
+test('PUT /dogs/:id returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = pickHandlers(router, 'put', '/:id', [0, 2]);
+  const req = createReq({
+    params: { id: '1' },
+    session: { user: { UserRole: 'ADMIN' } },
+    body: { dogName: 'CrashDog' },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 500);
+});
+
+test('DELETE /dogs/:id returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'delete', '/:id');
+  const req = createReq({ params: { id: '1' }, session: { user: { UserRole: 'ADMIN' } } });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 500);
+});
+
+test('POST /dogs/:id/treatments appends to existing treatment', async () => {
+  const { db } = createDbMockQueue([
+    [[{ treatment_process: 'old note' }]],
+    [{}],
+  ]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/treatments');
+  const req = createReq({
+    params: { id: '1' },
+    session: { user: { UserRole: 'STAFF' } },
+    body: { note: 'new note' },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { message: 'เพิ่มบันทึกการรักษาสำเร็จ' });
+});
+
+test('POST /dogs/:id/treatments returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/treatments');
+  const req = createReq({ params: { id: '1' }, session: { user: { UserRole: 'STAFF' } }, body: { note: 'test' } });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 500);
+});
+
+test('POST /dogs/:id/trainings appends to existing training', async () => {
+  const { db } = createDbMockQueue([
+    [[{ training_status: 'sit' }]],
+    [{}],
+  ]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/trainings');
+  const req = createReq({
+    params: { id: '1' },
+    session: { user: { UserRole: 'STAFF' } },
+    body: { note: 'stay' },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 200);
+  assert.deepEqual(res.body, { message: 'เพิ่มบันทึกการฝึกสำเร็จ' });
+});
+
+test('POST /dogs/:id/trainings returns 400 when note missing', async () => {
+  const { db } = createDbMockQueue([]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/trainings');
+  const req = createReq({ params: { id: '1' }, session: { user: { UserRole: 'STAFF' } }, body: {} });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 400);
+  assert.deepEqual(res.body, { message: 'กรุณาระบุบันทึกการฝึก' });
+});
+
+test('POST /dogs/:id/trainings returns 500 on db error', async () => {
+  const { db } = createDbMockQueue([new Error('DB down')]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/trainings');
+  const req = createReq({ params: { id: '1' }, session: { user: { UserRole: 'STAFF' } }, body: { note: 'test' } });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 500);
+});
+
+test('POST /dogs/:id/treatments first note on empty treatment_process', async () => {
+  const { db } = createDbMockQueue([
+    [[{ treatment_process: null }]],
+    [{}],
+  ]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/treatments');
+  const req = createReq({
+    params: { id: '1' },
+    session: { user: { UserRole: 'STAFF' } },
+    body: { note: 'first treatment' },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 200);
+});
+
+test('POST /dogs/:id/trainings first note on empty training_status', async () => {
+  const { db } = createDbMockQueue([
+    [[{ training_status: null }]],
+    [{}],
+  ]);
+  const router = loadRoute('routes/dogs.js', { dbMock: db });
+  const handlers = getHandlers(router, 'post', '/:id/trainings');
+  const req = createReq({
+    params: { id: '1' },
+    session: { user: { UserRole: 'STAFF' } },
+    body: { note: 'first training' },
+  });
+  const res = await runHandlers(handlers, req);
+  assert.equal(res.statusCode, 200);
+});

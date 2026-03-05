@@ -1,0 +1,30 @@
+const assert = require('assert');
+const userPickup = require('../src/frontend/js/user-pickup');
+
+describe('User Pickup Logic', () => {
+    it('should return correct pickup location for valid input', () => {
+        const result = userPickup.getPickupLocation('validInput');
+        assert.strictEqual(result, 'expectedLocation');
+    });
+
+    it('should handle invalid input gracefully', () => {
+        const result = userPickup.getPickupLocation('invalidInput');
+        assert.strictEqual(result, 'error');
+    });
+
+    it('should return default location when no input is provided', () => {
+        const result = userPickup.getPickupLocation();
+        assert.strictEqual(result, 'defaultLocation');
+    });
+
+    it('should throw an error for null input', () => {
+        assert.throws(() => {
+            userPickup.getPickupLocation(null);
+        }, Error);
+    });
+
+    it('should return correct pickup time based on input', () => {
+        const result = userPickup.getPickupTime('validInput');
+        assert.strictEqual(result, 'expectedTime');
+    });
+});
