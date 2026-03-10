@@ -107,7 +107,7 @@ router.post('/login', async (req, res) => {
       first_name: user.FirstName,
       last_name:  user.LastName,
       email:      user.UserEmail,
-      role:       user.UserRole.toLowerCase(),   // 'admin','staff','user','sponsor'
+      role:       user.UserRole.toLowerCase(),   
     };
 
     // กำหนด redirect URL ตาม role

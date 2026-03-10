@@ -183,10 +183,10 @@ router.put('/:id', requireRole('STAFF', 'ADMIN'), async (req, res) => {
 
 function normalise(r) {
   return {
-    id:           r.id   || null,            // NULL if no delivery row yet
+    id:           r.id   || null,           
     adoptionId:   r.adoptionId,
-    deliveryDate: r.deliveryDate || null,    // NULL until user picks a date
-    status:       (r.status || 'pending').toLowerCase(), // 'pending' = no delivery row
+    deliveryDate: r.deliveryDate || null,    
+    status:       (r.status || 'pending').toLowerCase(), 
     staffConfirmed: !!r.staffConfirmed,
     dogName:      r.dogName,
     firstName:    r.firstName,

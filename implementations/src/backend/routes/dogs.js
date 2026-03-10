@@ -185,16 +185,16 @@ router.post('/:id/trainings', requireRole('STAFF', 'ADMIN'), async (req, res) =>
 function normalise(d) {
   return {
     id:                d.DogId,
-    dog_id:            d.DogId,   // alias for frontend display
+    dog_id:            d.DogId,   
     name:              d.DogName,
-    age:               d.Age,                              // ← age field
+    age:               d.Age,                           
     breed:             d.breed,
     gender:            (d.gender || 'unknown').toLowerCase(),
     color:             d.color,
     medical_profile:   d.medical_profile,
     treatment_process: d.treatment_process,
     training_status:   d.training_status,
-    image_url:         d.image_url,                        // works for both /img/... and https://...
+    image_url:         d.image_url,                        
     status:            toApi(d.DogStatus),
     staff_name:        d.staff_name,
     created_at:        d.created_at,
