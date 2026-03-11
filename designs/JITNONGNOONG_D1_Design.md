@@ -484,181 +484,198 @@ The Class Diagram defines the Static View—how data is structured and how objec
 ```mermaid
 classDiagram
 direction TB
-   class User {
-       <<Abstract>>
-       - firstName : String
-       - lastName : String
-       - email : String
-       - PasswordHashing : String
-       - Role : String
-       + getRole() String
-       + getFullName() String
-       + getEmail() String
-       + login()
-   }
+    class User {
+        +UserId : int
+        +FirstName : String
+        +LastName : String
+        +UserEmail : String
+        +password_hash : String
+        +citizen_id : String
+        +phone : String
+        +address : Text
+        +UserRole : UserRole
+        +is_verified : Boolean
+        +created_at : Timestamp
+        +register()
+        +login()
+    }
 
+    class UserRole {
+        <<enumeration>>
+        USER
+        STAFF
+        ADMIN
+        SPONSOR
+    }
 
-   class Admin {
-       - AdminId : int
-       + generateReport()
-   }
+    class Dog {
+        +DogId : int
+        +DogName : String
+        +Age : int
+        +breed : String
+        +gender : Gender
+        +color : String
+        +medical_profile : Text
+        +treatment_process : Text
+        +training_status : Text
+        +image_url : String
+        +DogStatus : DogStatus
+        +created_by : int
+        +created_at : Timestamp
+        +addDog()
+        +updateDog()
+        +addTreatmentNote()
+        +addTrainingNote()
+    }
 
+    class Gender {
+        <<enumeration>>
+        MALE
+        FEMALE
+        UNKNOWN
+    }
 
-   class Organization_Staff {
-       - staffId: int
-       + manageDogProfile()
-       + approveRequest()
-       + viewAdopterList()
-       + verifyAdopter(citizenId : String)
-       + checkform(AdoptionForm : adoptionform)
-       + recordTreatment()
-   }
+    class DogStatus {
+        <<enumeration>>
+        AVAILABLE
+        PENDING
+        ADOPTED
+        IN_TREATMENT
+    }
 
+    class Favorite {
+        +UserId : int
+        +DogId : int
+        +addFavourite()
+        +removeFavourite()
+    }
 
-   class General_User {
-       - citizenId : Int
-       - userId : Int
-       - PhoneNum : string
-       + viewDogList()
-       + viewdogProfile(dogId)
-       + addToFavorite(dogId)
-       + submitAdoptionRequest(dogId)
-       + BookSchedule(dogId: int, selectedDate: DateTime)
-   }
+    class AdoptionRequest {
+        +AdoptionReqNo : int
+        +UserId : int
+        +DogId : int
+        +ReqStatus : ReqStatus
+        +verification_status : VerificationStatus
+        +rejection_reason : Text
+        +created_at : Timestamp
+        +submit()
+        +review()
+    }
 
+    class AdoptionRequestDetail {
+        +AdoptionReqNo : int
+        +adopter_address : Text
+        +living_type : LivingType
+        +adoption_reason : Text
+        +created_at : Timestamp
+    }
 
-   class Eligible_sponsors {
-       - UserName : String
-       - sponsorId : int
-       + register()
-       + donateMoney()
-       + inputBanner()
-   }
+    class LivingType {
+        <<enumeration>>
+        house
+        condo
+        apartment
+        townhouse
+    }
 
+    class ReqStatus {
+        <<enumeration>>
+        PENDING
+        APPROVED
+        REJECTED
+    }
 
-   class DeliverySchedule {
-       - appointmentDate : DateTime
-       - location : String
-       + confirmSchedule()
-   }
+    class VerificationStatus {
+        <<enumeration>>
+        PENDING
+        PASSED
+        FAILED
+    }
 
+    class DeliverySchedule {
+        +DeliveryNo : int
+        +AdoptionReqNo : int
+        +deliveryDate : Date
+        +DeliveryStatus : DeliveryStatus
+        +StaffConfirmed : Boolean
+        +setDeliveryDate()
+        +confirmDate()
+        +completeDelivery()
+    }
 
-   class FavoriteList {
-       - savedDogs : List
-       + addDog(Id)
-       + removeDog(Id)
-   }
+    class DeliveryStatus {
+        <<enumeration>>
+        SCHEDULED
+        COMPLETED
+    }
 
+    class MonthlyFollowup {
+        +FollowupNo : int
+        +AdoptionReqNo : int
+        +FollowupMonth : int
+        +note : Text
+        +photo_url : String
+        +check_date : Date
+        +UserRole : FollowupUserRole
+        +addStaffFollowup()
+        +uploadUserFollowup()
+    }
 
-   class TreatmentRecord {
-       - treatmentId : int
-       - dogId : int
-       - treatmentDetail : String
-       - treatmentDate : Date
-       + addTreatment()
-       + updateTreatment()
-   }
+    class FollowupUserRole {
+        <<enumeration>>
+        STAFF
+        USER
+    }
 
+    class Sponsor {
+        +SponsorId : int
+        +UserId : int
+        +donation_amount : Decimal
+        +banner_url : String
+        +created_at : Timestamp
+        +registerSponsor()
+        +updateDonation()
+    }
 
-   class TrainingRecord {
-       - trainingId : int
-       - dogId : int
-       - trainingDetail : String
-       - trainingDate : Date
-       - LeashTrained : Boolean
-       - CrateTrained : Boolean
-       - FoodTrained : Boolean
-       - HouseTrained : Boolean
-       + addTraining()
-       + updateTraining()
-   }
+    class CitizenRecord {
+        +citizen_id : String
+        +full_name : String
+        +birth_date : Date
+    }
 
+    class CriminalRecord {
+        +citizen_id : String
+        +has_criminal_record : Boolean
+    }
 
-   class AdoptionForm {
-       - requestId : int
-       - requestDate : Date
-       - name : String
-       - email : String
-       - Phone : String
-       - Address : String
-       - livingType : String
-       - Message : String
-       + submitForm()
-       + getForm()
-   }
+    class BlacklistRecord {
+        +citizen_id : String
+        +reason : Text
+    }
 
+    User --> UserRole : uses
+    Dog --> DogStatus : uses
+    Dog --> Gender : uses
+    AdoptionRequest --> ReqStatus : uses
+    AdoptionRequest --> VerificationStatus : uses
+    AdoptionRequestDetail --> LivingType : uses
+    DeliverySchedule --> DeliveryStatus : uses
+    MonthlyFollowup --> FollowupUserRole : uses
 
-   class CitizenProfileService {
-       <<Interface>>
-       +getThaiCitizenData(citizenId : String)
-   }
+    User "1" --> "*" Dog : creates/manages (STAFF/ADMIN)
+    User "1" --> "*" Favorite : saves
+    Dog "1" --> "*" Favorite : is favourited in
 
+    User "1" --> "*" AdoptionRequest : submits
+    Dog "1" --> "*" AdoptionRequest : requested in
+    AdoptionRequest "1" --> "0..1" AdoptionRequestDetail : has details
+    AdoptionRequest "1" --> "0..1" DeliverySchedule : schedules pickup
+    AdoptionRequest "1" --> "0..*" MonthlyFollowup : tracked by
 
-   class VerificationService {
-       <<Interface>>
-       +getCriminalRecord(citizenId : String)
-       +getBlacklistRecord(citizenId : String)
-   }
+    User "1" --> "0..1" Sponsor : owns sponsor profile
 
-
-   class Dog {
-       - dogId : int
-       - name : String
-       - breed : String
-       - color : String
-       - age : int
-       - description : String
-       - dogimage : String
-       - personality : String
-       - medicalProfile : String
-       - trainingProfile : String
-       - status : DogStatus
-       + addDog()
-       + updateDogProfile()
-       + updateDogStatus()
-   }
-
-
-   class DogStatus {
-       <<enumeration>>
-       AVAILABLE
-       PENDING
-       ADOPTED
-   }
-
-
-
-
-
-
-   User <|-- Admin
-   User <|-- Organization_Staff
-   User <|-- General_User
-   User <|-- Eligible_sponsors
-
-
-   General_User "1" -- "*" AdoptionForm : "fills/submits"
-   General_User "1" -- "1" FavoriteList : "has"
-   General_User "1" -- "*" DeliverySchedule : "books"
-   AdoptionForm "1" -- "0..1" DeliverySchedule : "triggers"
-
-
-   Dog "1" -- "*" TreatmentRecord : "has"
-   Dog "1" -- "*" TrainingRecord : "has"
-   Dog "1" -- "*" AdoptionForm : "is requested by"
-
-
-   FavoriteList "1" -- "*" Dog : "contains"
-   DeliverySchedule "*" -- "1" Dog : "for"
-
-
-   Organization_Staff "1" -- "*" Dog : "manages"
-   Organization_Staff -- AdoptionForm : "reviews (checkform)"
-
-
-   Admin "1" -- "*" Dog : "monitors"
-   Dog -- DogStatus : "uses"
-   General_User -- CitizenProfileService : "verifies via"
-   Organization_Staff -- VerificationService : "verifies via"
+    User "1" --> "0..1" CitizenRecord : verified against
+    User "1" --> "0..1" CriminalRecord : checked against
+    User "1" --> "0..1" BlacklistRecord : checked against
 ```
 
