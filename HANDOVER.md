@@ -20,11 +20,6 @@ The JITNONGNOOONG system is a comprehensive Dog Adoption platform designed for f
 - **Roles and Permissions**: Role-Based Access Control (RBAC) designed in the Class Diagram is faithfully implemented using express-session middleware to guard API endpoints according to the roles.
 - **Data Flow**: The six core functional processes outlined in the Data Flow Diagrams (Authentication, Dog Management, Adoption, Sponsor, Check-up, and Reporting) are all functional and map correctly to the respective API routes.
 
-### Differences
-
-- **Backend Component Diagram**: The original backend component diagram only highlighted a subset of the APIs (Verify, Adoption, Report, LogIn, SignIn, Dog). However, the implementation clearly separates responsibilities into additional domain-specific APIs not explicitly drawn in the component diagram, such as `checkups.js`, `sponsors.js`, `favourites.js`, and `appointments.js` (for delivery scheduling).
-- **Web UI Component Diagram**: The C4 Web UI component diagram shows separate components for “Sign In” and “Log In”, but the implementation merges these into a single `/pages/login.html` page to streamline user onboarding.
-
 ## 3. Reflection
 
 ### a. Technologies used
