@@ -31,15 +31,15 @@ The JITNONGNOOONG system is a comprehensive Dog Adoption platform designed for f
 - **File Handling**: `multer` is utilized for managing image uploads (e.g., dog profiles, check-up pictures, sponsor banners).
 
 ### b. Required information for successful handover
-
-- Database and Source Files
-- Project Structure
-- Dependencies Requirement
-- Database Setup Steps
-- Application Setup Steps and Command
-- **Technology Version (Node.js**: version 18.x , N**pm**: version 9.x, **MySQL**: version 8.0)
-- Demo Accounts and password
-- Backend Setup & Run
+- Project Structure & Source Files
+- Technology Stack Versions (Node.js: 18.x, npm: 9.x, MySQL: 8.0)
+- Dependency Installation Steps (npm install)
+- Database Setup Steps (Executing the .sql schema)
+- Environment Setup (Configuring the .env file)
+- Application Run Commands (npm run dev or npm start)
+- Testing Commands (npm test)
+- Pre-configured Demo Accounts and Passwords
+- API Route References
 
 ### c. Code quality (analyzed using SonarQube)
 
