@@ -76,22 +76,6 @@ router.get('/search', async (req, res) => {
     // Validate enum values if provided
     const validValues = dogService.getValidValues();
 
-    if (training_status && !validValues.training_status.includes(training_status)) {
-      return res.status(400).json({
-        success: false,
-        data: null,
-        message: `Invalid training_status. Valid values: ${validValues.training_status.join(', ')}`,
-      });
-    }
-
-    if (availability && !validValues.availability.includes(availability)) {
-      return res.status(400).json({
-        success: false,
-        data: null,
-        message: `Invalid availability. Valid values: ${validValues.availability.join(', ')}`,
-      });
-    }
-
     // Build search filters object
     const filters = {
       keyword: keyword || undefined,
