@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const db = require('../config/db');
 const { requireRole } = require('../middleware/auth');
+const dogService = require('../services/dogService');
 
 /* Multer — store uploaded files in /frontend/img */
 const storage = multer.diskStorage({
@@ -34,6 +35,98 @@ function resolveDogName(body) {
 /* Map DB status (UPPERCASE) ↔ API status (lowercase) */
 const toApi = s => (s || '').toLowerCase();
 const toDB  = s => (s || '').toUpperCase();
+
+/* ─────────────────────────────────────────────────────────────
+   GET /api/dogs/search
+   Search and filter dogs with pagination
+   Query params: keyword, breed, color, training_status, availability, limit, offset
+   ───────────────────────────────────────────────────────────── */
+router.get('/search', async (req, res) => {
+  try {
+    const {
+      keyword,
+      breed,
+      color,
+      training_status,
+      availability,
+      limit = 10,
+      offset = 0,
+    } = req.query;
+
+    // Validate pagination parameters
+    const limitNum = parseInt(limit);
+    const offsetNum = parseInt(offset);
+
+    if (isNaN(limitNum) || limitNum < 1 || limitNum > 100) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        message: 'Limit must be a number between 1 and 100',
+      });
+    }
+
+    if (isNaN(offsetNum) || offsetNum < 0) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        message: 'Offset must be a non-negative number',
+      });
+    }
+
+    // Validate enum values if provided
+    const validValues = dogService.getValidValues();
+
+    if (training_status && !validValues.training_status.includes(training_status)) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        message: `Invalid training_status. Valid values: ${validValues.training_status.join(', ')}`,
+      });
+    }
+
+    if (availability && !validValues.availability.includes(availability)) {
+      return res.status(400).json({
+        success: false,
+        data: null,
+        message: `Invalid availability. Valid values: ${validValues.availability.join(', ')}`,
+      });
+    }
+
+    // Build search filters object
+    const filters = {
+      keyword: keyword || undefined,
+      breed: breed || undefined,
+      color: color || undefined,
+      training_status: training_status || undefined,
+      availability: availability || undefined,
+    };
+
+    // Call service to perform search
+    const result = await dogService.searchDogs(filters, limitNum, offsetNum);
+
+    // Return standardized response
+    return res.status(200).json({
+      success: true,
+      data: {
+        dogs: result.dogs.map(normalise),
+        pagination: {
+          total: result.total,
+          limit: result.limit,
+          offset: result.offset,
+          hasMore: result.hasMore,
+        },
+      },
+      message: 'Search completed successfully',
+    });
+  } catch (err) {
+    console.error('Search route error:', err);
+    return res.status(500).json({
+      success: false,
+      data: null,
+      message: 'Database query failed',
+    });
+  }
+});
 
 /* GET /api/dogs */
 router.get('/', async (req, res) => {

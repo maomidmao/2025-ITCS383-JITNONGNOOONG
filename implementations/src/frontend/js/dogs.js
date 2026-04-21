@@ -11,28 +11,221 @@ async function init(){
        <a href="${dashLink}" class="btn btn--outline btn--sm">แดชบอร์ด</a>`;
     try{ const f=await api.getFavourites(); favourites=new Set((f.favourites||[]).map(d=>d.id)); }catch{}
   }
-  await loadDogs();
+  
+  // Load all dogs for filter options
+  try{ 
+    const d=await api.getDogs({limit:50}); 
+    allDogs=d.dogs||[]; 
+  }
+  catch(e){ 
+    console.error('Error loading dogs:', e); 
+    allDogs=[]; 
+  }
+  
+  // Populate filter dropdowns
+  populateFilterOptions();
+  
+  // Perform initial search
+  performSearch();
 }
 
-async function loadDogs(){
-  try{ const d=await api.getDogs({limit:50}); allDogs=d.dogs||[]; filterDogs(); }
-  catch(e){ console.error(e); allDogs=[]; filterDogs(); }
+/** Populate breed and color dropdowns from all dogs */
+function populateFilterOptions(){
+  const breeds = new Set();
+  const colors = new Set();
+  
+  allDogs.forEach(dog => {
+    if(dog.breed) breeds.add(dog.breed);
+    if(dog.color) colors.add(dog.color);
+  });
+
+  const breedSelect = document.getElementById('filterBreed');
+  const colorSelect = document.getElementById('filterColor');
+
+  // Sort and populate breed dropdown
+  Array.from(breeds).sort().forEach(breed => {
+    const option = document.createElement('option');
+    option.value = breed;
+    option.textContent = breed;
+    breedSelect.appendChild(option);
+  });
+
+  // Sort and populate color dropdown
+  Array.from(colors).sort().forEach(color => {
+    const option = document.createElement('option');
+    option.value = color;
+    option.textContent = color;
+    colorSelect.appendChild(option);
+  });
 }
 
-function debouncedFilter(){ clearTimeout(debounceTimer); debounceTimer=setTimeout(filterDogs,300); }
-
-function filterDogs(){
-  const s=document.getElementById('searchInput').value.toLowerCase();
-  const st=document.getElementById('filterStatus').value;
-  const g=document.getElementById('filterGender').value;
-  const f=allDogs.filter(d=>
-    (!s||d.name.toLowerCase().includes(s)||(d.breed||'').toLowerCase().includes(s))&&
-    (!st||d.status===st)&&
-    (!g||d.gender===g)
-  );
-  renderDogs(f);
-  document.getElementById('resultCount').textContent=`พบ ${f.length} ตัว`;
+/** Toggle filter panel visibility */
+function toggleFilterPanel(){
+  const panel = document.getElementById('filterPanel');
+  const toggle = document.getElementById('toggleFilters');
+  const isOpen = panel.classList.contains('open');
+  
+  if(isOpen){
+    panel.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  } else {
+    panel.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
 }
+
+/** Reset all filters to default */
+function resetFilters(){
+  document.getElementById('searchKeyword').value = '';
+  document.getElementById('filterBreed').value = '';
+  document.getElementById('filterColor').value = '';
+  document.getElementById('filterTraining').value = '';
+  document.getElementById('filterAvailability').checked = false;
+  performSearch();
+}
+
+/** Debounced search on keyword input */
+function debouncedSearch(){ 
+  clearTimeout(debounceTimer); 
+  debounceTimer = setTimeout(performSearch, 300); 
+}
+
+/** Perform API search with current filters */
+async function performSearch(){
+  const gr = document.getElementById('dogsGrid');
+  
+  try{
+    // Show loading state
+    gr.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="loading-overlay"><span class="spinner"></span> กำลังค้นหา...</div>
+    </div>`;
+
+    const keyword = document.getElementById('searchKeyword').value.trim();
+    const breed = document.getElementById('filterBreed').value.trim();
+    const color = document.getElementById('filterColor').value.trim();
+    const training_status = document.getElementById('filterTraining').value.trim();
+    const onlyAvailable = document.getElementById('filterAvailability').checked;
+
+    // Build search params (only include non-empty values)
+    const params = {};
+    if(keyword) params.keyword = keyword;
+    if(breed) params.breed = breed;
+    if(color) params.color = color;
+    if(training_status) params.training_status = training_status;
+    if(onlyAvailable) params.availability = 'Available';
+    params.limit = 100;
+    params.offset = 0;
+
+    // Call search API
+    let result;
+    try {
+      result = await api.searchDogs(params);
+    } catch(apiErr) {
+      // Handle API errors
+      console.error('API error:', apiErr);
+      
+      // Check if error message indicates validation issues
+      const errorMsg = apiErr.message || 'เกิดข้อผิดพลาดในการค้นหา';
+      
+      if(errorMsg.includes('Invalid') || errorMsg.includes('invalid')) {
+        // Validation error from API
+        renderError('❌ ตัวกรองไม่ถูกต้อง<br/><span style="font-size:0.9rem">' + errorMsg + '</span>');
+      } else if(errorMsg.includes('Database') || errorMsg.includes('database')) {
+        // Database error
+        renderError('❌ เกิดข้อผิดพลาดในฐานข้อมูล<br/><span style="font-size:0.9rem">กรุณาลองใหม่ในอีกสักครู่</span>');
+      } else if(errorMsg.includes('Failed to fetch') || errorMsg.includes('failed')) {
+        // Network error
+        renderError('❌ เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว<br/><span style="font-size:0.9rem">กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</span>');
+      } else {
+        renderError('❌ เกิดข้อผิดพลาดในการค้นหา<br/><span style="font-size:0.9rem">' + errorMsg + '</span>');
+      }
+      
+      document.getElementById('resultCount').textContent = '';
+      return;
+    }
+
+    // Check if API response is successful
+    if(!result.success) {
+      console.error('API returned error:', result.message);
+      renderError('❌ ' + (result.message || 'เกิดข้อผิดพลาดในการค้นหา'));
+      document.getElementById('resultCount').textContent = '';
+      return;
+    }
+
+    // Extract dogs and pagination
+    const dogs = result.data?.dogs || [];
+    const pagination = result.data?.pagination || {};
+    const total = pagination.total || 0;
+
+    // Render results or empty state
+    if(dogs.length === 0) {
+      // No results found
+      const hasFilters = keyword || breed || color || training_status || onlyAvailable;
+      
+      if(hasFilters) {
+        // Clear filters suggestion
+        const filterSummary = [
+          keyword ? `"${keyword}"` : null,
+          breed || null,
+          color || null,
+          training_status || null,
+        ].filter(Boolean).join(' • ');
+        
+        renderEmpty(
+          `🔍 ไม่พบสุนัขที่ตรงกับ<br/><strong>${filterSummary}</strong>`,
+          `<button class="btn btn--outline btn--sm" onclick="resetFilters()" style="margin-top:var(--space-4)">
+            🔄 ล้างตัวกรอง
+          </button>`
+        );
+      } else {
+        // No filters applied
+        renderEmpty(
+          `📚 ยังไม่มีสุนัขในระบบ<br/><span style="font-size:0.9rem">กรุณากลับมาตรวจสอบในภายหลัง</span>`
+        );
+      }
+      
+      document.getElementById('resultCount').textContent = '-';
+    } else {
+      // Render dog cards
+      renderDogs(dogs);
+      
+      // Update result count with helpful message
+      if(total === 1) {
+        document.getElementById('resultCount').textContent = `พบ 1 ตัว`;
+      } else {
+        document.getElementById('resultCount').textContent = `พบ ${total} ตัว`;
+      }
+    }
+  } catch(err){
+    console.error('Unexpected search error:', err);
+    renderError('❌ เกิดข้อผิดพลาดที่ไม่คาดคิด<br/><span style="font-size:0.9rem">กรุณารีเฟรชหน้าและลองใหม่</span>');
+    document.getElementById('resultCount').textContent = '';
+  }
+}
+
+/** Render no results state with optional action button */
+function renderEmpty(message, action = ''){
+  const gr = document.getElementById('dogsGrid');
+  gr.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+    <div class="empty-state__icon">🔍</div>
+    <p style="margin-bottom:var(--space-3)">${message}</p>
+    ${action}
+  </div>`;
+}
+
+/** Render error state with retry option */
+function renderError(message){
+  const gr = document.getElementById('dogsGrid');
+  gr.innerHTML = `<div class="empty-state empty-state--error" style="grid-column:1/-1">
+    <div class="empty-state__icon">⚠️</div>
+    <p style="margin-bottom:var(--space-3)">${message}</p>
+    <button class="btn btn--outline btn--sm" onclick="performSearch()">
+      🔄 ลองใหม่
+    </button>
+  </div>`;
+}
+
+
 
 function renderDogs(dogs){
   const gr=document.getElementById('dogsGrid');

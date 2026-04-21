@@ -1,4 +1,124 @@
-.detail-panel {
+/* ─────────────────────────────────────────────────────────────
+   Search & Filter Bar
+   ───────────────────────────────────────────────────────────── */
+.filter-bar {
+    background: var(--color-white);
+    border-bottom: 1px solid var(--color-gray-100);
+    padding: var(--space-6) var(--space-6);
+    margin-bottom: var(--space-6);
+}
+
+.filter-bar__top {
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    margin-bottom: var(--space-4);
+}
+
+.search-input-wrap {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 200px;
+}
+
+.search-icon {
+    position: absolute;
+    left: var(--space-4);
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+.search-input-wrap .form-control {
+    padding-left: 2.8rem;
+}
+
+.filter-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.filter-panel.open {
+    max-height: 500px;
+    margin-bottom: var(--space-4);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.filter-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-gray-700);
+}
+
+.filter-label--toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.filter-label--toggle input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.filter-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-gray-100);
+}
+
+.filter-bar__count {
+    font-size: 0.9rem;
+    color: var(--color-gray-600);
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .filter-bar {
+        padding: var(--space-4) var(--space-4);
+    }
+
+    .filter-bar__top {
+        flex-direction: column;
+    }
+
+    .search-input-wrap {
+        width: 100%;
+    }
+
+    .filter-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+    }
+
+    .filter-actions button {
+        width: 100%;
+    }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Detail Panel
+   ───────────────────────────────────────────────────────────── */
+
     position:fixed;
     top:0;right:-520px;
     width:500px;

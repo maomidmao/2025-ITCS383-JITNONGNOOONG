@@ -19,10 +19,69 @@
 </nav>
 <div class="page-header"><div class="page-header__inner"><h1 class="page-header__title">🐶 สุนัขรอหาบ้าน</h1><p class="page-header__sub">ค้นหาเพื่อนสี่ขาที่ใช่สำหรับคุณ</p></div></div>
 <div class="filter-bar" role="search" aria-label="ค้นหาและกรองสุนัข">
-  <div class="search-input-wrap"><span class="search-icon" aria-hidden="true">🔍</span><input class="form-control" type="search" id="searchInput" placeholder="ค้นหาชื่อหรือสายพันธุ์..." aria-label="ค้นหาสุนัข" oninput="debouncedFilter()"></div>
-  <select class="form-control" id="filterStatus" aria-label="กรองตามสถานะ" onchange="filterDogs()"><option value="">สถานะทั้งหมด</option><option value="available">ว่าง</option><option value="pending">มีผู้สนใจ</option></select>
-  <select class="form-control" id="filterGender" aria-label="กรองตามเพศ" onchange="filterDogs()"><option value="">เพศทั้งหมด</option><option value="male">ผู้</option><option value="female">เมีย</option></select>
-  <span id="resultCount" class="text-muted text-small" aria-live="polite"></span>
+  <div class="filter-bar__top">
+    <div class="search-input-wrap">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input 
+        class="form-control" 
+        type="search" 
+        id="searchKeyword" 
+        placeholder="ค้นหาชื่อหรือสายพันธุ์..." 
+        aria-label="ค้นหาสุนัข"
+        oninput="debouncedSearch()">
+    </div>
+    <button 
+      class="btn btn--outline btn--sm" 
+      id="toggleFilters" 
+      onclick="toggleFilterPanel()"
+      aria-label="เปิด/ปิดแผงกรอง"
+      aria-expanded="false">
+      ⚙️ ตัวกรอง
+    </button>
+  </div>
+
+  <div class="filter-panel" id="filterPanel" aria-hidden="true">
+    <div class="filter-group">
+      <label class="filter-label" for="filterBreed">สายพันธุ์</label>
+      <select class="form-control" id="filterBreed" onchange="performSearch()">
+        <option value="">ทั้งหมด</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label" for="filterColor">สี</label>
+      <select class="form-control" id="filterColor" onchange="performSearch()">
+        <option value="">ทั้งหมด</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label" for="filterTraining">สถานะการฝึก</label>
+      <select class="form-control" id="filterTraining" onchange="performSearch()">
+        <option value="">ทั้งหมด</option>
+        <option value="Untrained">ยังไม่ฝึก</option>
+        <option value="Partially Trained">ฝึกแล้วบ้าง</option>
+        <option value="Fully Trained">ฝึกแล้วทั้งหมด</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label filter-label--toggle" for="filterAvailability">
+        <input 
+          type="checkbox" 
+          id="filterAvailability" 
+          onchange="performSearch()"
+          aria-label="แสดงเฉพาะสุนัขที่ว่าง">
+        <span>แสดงเฉพาะสุนัขที่ว่าง</span>
+      </label>
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn btn--outline btn--sm" onclick="resetFilters()">ล้างตัวกรอง</button>
+    </div>
+  </div>
+
+  <span id="resultCount" class="filter-bar__count" aria-live="polite"></span>
 </div>
 <main id="main"><div class="page-container"><div class="dogs-grid" id="dogsGrid" aria-live="polite"><div class="loading-overlay" style="grid-column:1/-1"><span class="spinner"></span> กำลังโหลด...</div></div></div></main>
 

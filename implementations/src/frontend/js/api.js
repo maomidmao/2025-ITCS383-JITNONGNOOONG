@@ -21,6 +21,7 @@ const api = {
   getMe:     ()                   => request('GET',  '/api/auth/me'),
 
   getDogs:      (params = {})     => request('GET',    '/api/dogs?' + new URLSearchParams(params)),
+  searchDogs:   (params = {})     => request('GET',    '/api/dogs/search?' + new URLSearchParams(params)),
   getDog:       (id)              => request('GET',    `/api/dogs/${id}`),
   createDog:    (form)            => request('POST',   '/api/dogs',       form, true),
   updateDog:    (id, form)        => request('PUT',    `/api/dogs/${id}`, form, true),
