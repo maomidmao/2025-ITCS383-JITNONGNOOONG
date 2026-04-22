@@ -32,13 +32,14 @@ app.use((req, res, next) => {
   next();
 });
 app.use(session({
-  secret:            process.env.SESSION_SECRET || 'pawfund_dev_secret',
-  resave:            false,
+  secret: process.env.SESSION_SECRET || 'pawfund_dev_secret',
+  resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure:   process.env.NODE_ENV === 'production',
-    maxAge:   24 * 60 * 60 * 1000, // 1 day
+    secure: true,          // 🔥 บังคับใช้ https
+    sameSite: 'none',      // 🔥 สำคัญมาก
+    maxAge: 24 * 60 * 60 * 1000,
   },
 }));
 
