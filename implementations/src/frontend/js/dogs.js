@@ -176,6 +176,7 @@ async function performSearch() {
 
         'ผ่านการฝึกพื้นฐาน': [
           'ผ่านการฝึกพื้นฐาน',
+          'ผ่านการฝึก'
         ]
       };
 
@@ -183,7 +184,7 @@ async function performSearch() {
 
       dogs = dogs.filter(d => {
         const value = (d.training_status || '').toLowerCase();
-        return targets.some(t => value.includes(t));
+        return targets.some(t => value === t.toLowerCase());
       });
     }
 
