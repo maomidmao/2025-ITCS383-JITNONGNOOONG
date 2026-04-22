@@ -113,6 +113,15 @@ CREATE TABLE citizen_records (
     birth_date DATE
 );
 
+CREATE TABLE notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message TEXT NOT NULL,
+    type ENUM('approved', 'rejected', 'reminder') NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE INDEX idx_dog_status ON dogs(DogStatus);
 CREATE INDEX idx_adoption_status ON adoption_requests(ReqStatus);
 CREATE INDEX idx_user_role ON users(UserRole);

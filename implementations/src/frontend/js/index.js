@@ -17,6 +17,7 @@
           <span class="text-small text-muted">${name}</span>
           <a href="${dashLink}" class="btn btn--outline btn--sm">แดชบอร์ด</a>
           <button onclick="doLogout()" class="btn btn--ghost btn--sm">ออกจากระบบ</button>`;
+        if (typeof initNotificationBell === 'function') setTimeout(initNotificationBell, 100);
       } catch {}
     }
 

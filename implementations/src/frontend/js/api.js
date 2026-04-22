@@ -58,6 +58,9 @@ const api = {
   getReportSummary:     ()        => request('GET', '/api/reports/summary'),
   getPotentialAdopters: ()        => request('GET', '/api/reports/potential-adopters'),
   getAIReportSummary:   ()        => request('GET', '/api/reports/ai-summary'),
+
+  getNotifications:   ()          => request('GET', '/api/notifications'),
+  readNotification:   (id)        => request('PATCH', `/api/notifications/${id}/read`),
 };
 
 function showAlert(el, message, type = 'error') {
@@ -99,6 +102,7 @@ async function requireAuth(redirectTo) {
   try {
     const data = await api.getMe();
     if (!data.user) throw new Error('no session');
+    setTimeout(() => { if (typeof initNotificationBell === 'function') initNotificationBell(); }, 100);
     return data.user;
   } catch {
     location.href = '/pages/login.html?next=' + encodeURIComponent(redirectTo || location.pathname);
@@ -150,4 +154,78 @@ function toggleOrder(order) {
 function setSortButtonLabel(buttonId, text = 'ล่าสุด ↑↓') {
   const btn = document.getElementById(buttonId);
   if (btn) btn.textContent = text;
+}
+
+/* ── Notifications ── */
+async function initNotificationBell() {
+  const navUser = document.querySelector('.nav__user');
+  if (!navUser) return;
+  if (document.getElementById('notifBellWrap')) return;
+
+  try {
+    const res = await api.getNotifications();
+    const notifs = res.data || [];
+    const unreadCount = notifs.filter(n => !n.is_read).length;
+
+    const wrap = document.createElement('div');
+    wrap.id = 'notifBellWrap';
+    wrap.className = 'notif-bell-wrap';
+    
+    wrap.innerHTML = `
+      <button class="notif-bell-btn" id="notifBellBtn" aria-label="การแจ้งเตือน">
+        🔔
+        ${unreadCount > 0 ? `<span class="notif-badge">${unreadCount}</span>` : ''}
+      </button>
+      <div class="notif-dropdown" id="notifDropdown">
+        <div class="notif-header">การแจ้งเตือน</div>
+        <div class="notif-list">
+          ${notifs.length === 0 ? '<div class="notif-empty">ไม่มีการแจ้งเตือน</div>' : 
+            notifs.map(n => `
+              <div class="notif-item ${n.is_read ? '' : 'unread'}" data-id="${n.id}">
+                <p>${n.message}</p>
+                <span class="notif-time">${fmtDate(n.created_at)}</span>
+              </div>
+            `).join('')
+          }
+        </div>
+      </div>
+    `;
+
+    navUser.prepend(wrap);
+
+    const btn = document.getElementById('notifBellBtn');
+    const dropdown = document.getElementById('notifDropdown');
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!wrap.contains(e.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+
+    dropdown.querySelectorAll('.notif-item.unread').forEach(item => {
+      item.addEventListener('click', async () => {
+        try {
+          await api.readNotification(item.dataset.id);
+          item.classList.remove('unread');
+          const newUnread = document.querySelectorAll('.notif-item.unread').length;
+          const badge = wrap.querySelector('.notif-badge');
+          if (newUnread > 0) {
+            if (badge) badge.textContent = newUnread;
+          } else {
+            if (badge) badge.remove();
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    });
+
+  } catch (err) {
+    console.error('Failed to load notifications:', err);
+  }
 }

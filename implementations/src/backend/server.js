@@ -60,6 +60,7 @@ app.use('/api/checkups',   require('./routes/checkups'));
 app.use('/api/verify',     require('./routes/verify'));
 app.use('/api/sponsors',   require('./routes/sponsors'));
 app.use('/api/reports',    require('./routes/reports'));
+app.use('/api/notifications', require('./routes/notifications'));
 
 /* ── Health check ── */
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));

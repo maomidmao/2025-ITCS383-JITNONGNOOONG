@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const db     = require('../config/db');
+const db = require('../config/db');
 
 /** Inline session guard — avoids circular/undefined import issues */
 function requireSession(req, res, next) {
@@ -14,19 +14,19 @@ function requireSession(req, res, next) {
 router.post('/register', async (req, res) => {
   try {
     // รองรับทั้ง 2 รูปแบบ field name ที่ frontend อาจส่งมา
-    const firstName  = req.body.firstName  || req.body.first_name  || '';
-    const lastName   = req.body.lastName   || req.body.last_name   || '';
-    const email      = req.body.email      || '';
-    const password   = req.body.password   || '';
-    const citizen_id = req.body.citizen_id || req.body.citizenId   || '';
-    const phone      = req.body.phone      || req.body.phone_num   || null;
-    const address    = req.body.address    || null;
+    const firstName = req.body.firstName || req.body.first_name || '';
+    const lastName = req.body.lastName || req.body.last_name || '';
+    const email = req.body.email || '';
+    const password = req.body.password || '';
+    const citizen_id = req.body.citizen_id || req.body.citizenId || '';
+    const phone = req.body.phone || req.body.phone_num || null;
+    const address = req.body.address || null;
     // map role: frontend ส่ง "general_user"/"sponsor" → DB ใช้ "USER"/"SPONSOR"
     const rawRole = (req.body.role || '').toLowerCase();
     const roleMap = {
       'general_user': 'USER',
-      'user':         'USER',
-      'sponsor':      'SPONSOR',
+      'user': 'USER',
+      'sponsor': 'SPONSOR',
     };
     const userRole = roleMap[rawRole] || 'USER';
 
@@ -96,28 +96,68 @@ router.post('/login', async (req, res) => {
     // normalize ให้ frontend ใช้ได้ทั้ง camelCase และ snake_case
     req.session.user = {
       // DB field names (UPPERCASE)
-      UserId:     user.UserId,
-      FirstName:  user.FirstName,
-      LastName:   user.LastName,
-      UserEmail:  user.UserEmail,
-      UserRole:   user.UserRole,
+      UserId: user.UserId,
+      FirstName: user.FirstName,
+      LastName: user.LastName,
+      UserEmail: user.UserEmail,
+      UserRole: user.UserRole,
       citizen_id: user.citizen_id,
       // frontend-friendly aliases (lowercase)
-      id:         user.UserId,
+      id: user.UserId,
       first_name: user.FirstName,
-      last_name:  user.LastName,
-      email:      user.UserEmail,
-      role:       user.UserRole.toLowerCase(),   
+      last_name: user.LastName,
+      email: user.UserEmail,
+      role: user.UserRole.toLowerCase(),
     };
 
     // กำหนด redirect URL ตาม role
     const redirectMap = {
-      ADMIN:   '/pages/admin-dashboard.html',
-      STAFF:   '/pages/staff-dashboard/dogmanagement.html',
+      ADMIN: '/pages/admin-dashboard.html',
+      STAFF: '/pages/staff-dashboard/dogmanagement.html',
       SPONSOR: '/pages/sponsor-dashboard.html',
-      USER:    '/pages/user-dashboard/favourites.html',
+      USER: '/pages/user-dashboard/favourites.html',
     };
     const redirect = redirectMap[user.UserRole] || '/pages/dogs.html';
+
+    // NEW: Check for due check-ups and create reminder notifications
+    if (user.UserRole === 'USER') {
+      try {
+        const [dueCheckups] = await db.execute(`
+          SELECT ar.AdoptionReqNo, d.DogName
+          FROM adoption_requests ar
+          JOIN dogs d ON ar.DogId = d.DogId
+          JOIN delivery_schedules ds ON ds.AdoptionReqNo = ar.AdoptionReqNo
+          WHERE ar.UserId = ? 
+            AND ds.DeliveryStatus = 'COMPLETED'
+            AND ds.deliveryDate IS NOT NULL
+            AND TIMESTAMPDIFF(MONTH, ds.deliveryDate, CURDATE()) > (
+                SELECT COALESCE(MAX(FollowupMonth), 0)
+                FROM monthly_followups mf
+                WHERE mf.AdoptionReqNo = ar.AdoptionReqNo
+            )
+        `, [user.UserId]);
+
+        for (const checkup of dueCheckups) {
+          const reminderMsg = `ถึงกำหนดอัปเดตสถานะรายเดือนของน้อง \${checkup.DogName} แล้วค่ะ`;
+
+          // Check if we already notified them recently (e.g. within the last 20 days) to prevent spam
+          const [existingNotif] = await db.execute(
+            "SELECT id FROM notifications WHERE user_id = ? AND message = ? AND type = 'reminder' AND created_at >= DATE_SUB(CURDATE(), INTERVAL 20 DAY)",
+            [user.UserId, reminderMsg]
+          );
+
+          if (existingNotif.length === 0) {
+            await db.execute(
+              "INSERT INTO notifications (user_id, message, type) VALUES (?, ?, 'reminder')",
+              [user.UserId, reminderMsg]
+            );
+          }
+        }
+      } catch (err) {
+        console.error('Reminder check error:', err);
+      }
+    }
+
     res.json({ message: 'เข้าสู่ระบบสำเร็จ', user: req.session.user, redirect });
   } catch (err) {
     console.error(err);

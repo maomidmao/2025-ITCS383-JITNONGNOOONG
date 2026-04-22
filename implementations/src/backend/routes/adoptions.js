@@ -226,6 +226,12 @@ router.put('/:id/review', requireRole('STAFF', 'ADMIN'), async (req, res) => {
           [req.params.id]
         );
       }
+
+      // Create notification for approval
+      await db.execute(
+        "INSERT INTO notifications (user_id, message, type) VALUES (?, ?, 'approved')",
+        [adoption.UserId, 'คำขอรับอุปการะสุนัขของคุณได้รับการอนุมัติแล้ว']
+      );
     } else {
       await db.execute(
         "UPDATE adoption_requests SET ReqStatus='REJECTED', verification_status='FAILED', rejection_reason=? WHERE AdoptionReqNo=?",
@@ -239,6 +245,15 @@ router.put('/:id/review', requireRole('STAFF', 'ADMIN'), async (req, res) => {
       );
       const nextDogStatus = pendingRows[0].total > 0 ? 'PENDING' : 'AVAILABLE';
       await db.execute("UPDATE dogs SET DogStatus=? WHERE DogId=?", [nextDogStatus, adoption.DogId]);
+
+      // Create notification for rejection
+      const rejectMsg = rejection_reason 
+        ? `คำขอรับอุปการะสุนัขของคุณถูกปฏิเสธ: ${rejection_reason}` 
+        : 'คำขอรับอุปการะสุนัขของคุณถูกปฏิเสธ';
+      await db.execute(
+        "INSERT INTO notifications (user_id, message, type) VALUES (?, ?, 'rejected')",
+        [adoption.UserId, rejectMsg]
+      );
     }
 
     res.json({ message: isApprove ? 'อนุมัติคำขอสำเร็จ' : 'ปฏิเสธคำขอสำเร็จ' });

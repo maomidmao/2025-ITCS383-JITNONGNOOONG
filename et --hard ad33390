@@ -1,0 +1,104 @@
+[33m5b79563[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeatures[m[33m, [m[1;31morigin/features[m[33m)[m add script
+[33m7fdae86[m Notification features add
+[33mad33390[m Fix search and filter bar
+[33mc85b273[m Dogs.css Fix
+[33m385b6af[m Search Feature Fix
+[33m961c62d[m implement search engine backend API
+[33mc01d023[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Revise handover documentation for clarity
+[33mbda133b[m Fix HANDOVER.md
+[33m6bd5ac0[m Create HANDOVER.md
+[33m277e056[m Update D1_classdiagram
+[33m6a00d68[m Update README.md
+[33m5627397[m Update README.md
+[33me812620[m delete noise comments
+[33m9c5afae[m delete nodes
+[33m795c680[m Update README.md
+[33m00f9674[m Add files via upload
+[33m94f59a7[m Fix backend directory paths in README
+[33ma17e028[m Fix image link for Screenshot3 in report
+[33mb67f64c[m Rename messageImage_1772733773307.jpg to Sceenshot3.jpg
+[33maf22c1f[m Replace second screenshot in Quality Report
+[33m919a8eb[m Rename Screenshot 2026-03-05 at 23.43.50.png to Screenshot2.png
+[33m14cdb29[m Fix image markdown syntax in quality report
+[33m16edf24[m Update screenshot link in quality report
+[33m2de7495[m Rename Screenshot 2026-03-05 at 23.42.58.png to Screenshot1.png
+[33m5694b16[m Fix screenshot link in quality report
+[33m2f86f23[m Update JITNONGNOOONG _D4_QualityReport.md
+[33m6aa8b5c[m Delete Sonar_Evidences/text.txt
+[33m18fe02e[m Add files via upload
+[33m5b77785[m Create text.txt
+[33m220730d[m Delete Sonar_Evidences/text.txt
+[33m0cc781c[m Create text.txt
+[33m7e3feb0[m Delete messageImage_1772733773307.jpg
+[33m0857213[m Delete Screenshot 2026-03-05 at 23.43.50.png
+[33md90a91d[m Delete Screenshot 2026-03-05 at 23.42.58.png
+[33mcf35b03[m Add files via upload
+[33mf5bfa0a[m Add files via upload
+[33m1821a7f[m complete workflows
+[33m416b387[m add dispatch
+[33m5ec6bd9[m complete workflow
+[33m0868f1b[m ci: add manual dispatch + diagnostic workflow
+[33m39abe97[m change host url
+[33m7e439b1[m change host url
+[33m70af59c[m ci: switch build runner to ubuntu
+[33m6a843be[m ci: switch build runner to ubuntu
+[33m030be93[m ci: add manual and PR triggers for build workflow
+[33m3d3607f[m delete nodes
+[33m20d78a5[m delete nodes
+[33m5c2f8a5[m refactor
+[33m045de59[m update readme
+[33mdd18886[m delete nodes
+[33m8cd57fb[m add nodes
+[33macdae9d[m Delete implementations/node_modules directory
+[33m2439b77[m add cov info
+[33me5eaa2a[m Add SonarCloud CI with coverage
+[33m10cf4af[m Add SonarCloud CI with coverage
+[33meebf0fd[m Add SonarCloud CI with coverage
+[33m86881dd[m Add SonarCloud CI with coverage
+[33m3d2d396[m Add SonarCloud CI with coverage
+[33m0c2104a[m Add SonarCloud CI with coverage
+[33mbbed2c8[m Add devcontainer for SonarQube lab
+[33m1cb51b3[m Fix merge conflict in README.md
+[33maa5b72a[m Resolved merge conflict by removing README.md and merging main
+[33m3b2f258[m Delete README.md
+[33m52b9da7[m อย่าลืมที่จะเริ่ด
+[33md55f937[m Delete implementations/backend/middleware.auth.test.js
+[33md1727b4[m Delete implementations/backend/routes.adoptions.test.js
+[33mb87dc19[m Delete implementations/backend/routes.appointments.test.js
+[33md881c31[m Delete implementations/backend/routes.auth.test.js
+[33m821cf63[m Delete implementations/backend/routes.checkups.test.js
+[33m05eb502[m Delete implementations/backend/routes.dogs.test.js
+[33med6482d[m Delete implementations/backend/routes.favourites.test.js
+[33mdc3a904[m Delete implementations/backend/routes.reports.test.js
+[33m85760de[m Delete implementations/backend/routes.sponsors.test.js
+[33md6299b0[m Delete implementations/backend/routes.verify.test.js
+[33mb1a34e5[m Delete implementations/backend/test-utils.js
+[33mb7caf12[m Delete implementations/backend/all-in-one.test.js
+[33m7f80368[m Add files via upload
+[33m9078410[m Don't forget to เริ่ด
+[33m678cd69[m Improve formatting in Data Flow Diagram explanation
+[33m68d2cdd[m Update JITNONGNOONG_D1_Design.md
+[33m5d5b569[m Update JITNONGNOONG_D1_Design.md
+[33mb617eb0[m Update JITNONGNOONG_D1_Design.md
+[33m448d0c6[m Update JITNONGNOONG_D1_Design.md
+[33mb632480[m Refactor class diagram explanation for clarity
+[33mf6b4e45[m Update JITNONGNOONG_D1_Design.md
+[33mbe30876[m Update JITNONGNOONG_D1_Design.md
+[33m4453f64[m Update JITNONGNOONG_D1_Design.md
+[33m60b9df7[m Update JITNONGNOONG_D1_Design.md
+[33md6c400a[m Update JITNONGNOONG_D1_Design.md
+[33m4c93ea4[m Update JITNONGNOONG_D1_Design.md
+[33md932005[m Update JITNONGNOONG_D1_Design.md
+[33mc1390ff[m Update JITNONGNOONG_D1_Design.md
+[33md3815b5[m Update JITNONGNOONG_D1_Design.md
+[33m8bed252[m Correct image link for Context Diagram
+[33m6be7a95[m Fix Context Diagram image link
+[33mcbc80e7[m Update JITNONGNOONG_D1_Design.md
+[33m09a38c5[m Update JITNONGNOONG_D1_Design.md
+[33m6b44d40[m Update JITNONGNOONG_D1_Design.md
+[33mb7df4f4[m Update JITNONGNOONG_D1_Design.md
+[33ma6257d7[m Update JITNONGNOONG_D1_Design.md
+[33ma22541d[m Update JITNONGNOONG_D1_Design.md
+[33mc97f9a7[m Add files via upload
+[33ma51fe92[m designs
+[33m69da6b1[m Initial commit
