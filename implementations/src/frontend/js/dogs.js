@@ -159,19 +159,31 @@ async function performSearch() {
       dogs = dogs.filter(d => d.color === color);
     }
 
-    // 🔥 training (รองรับข้อมูล DB หลายแบบ)
+    // 🔥 training mapping (ตามที่คุณกำหนด)
     if (training_status) {
       const trainingMap = {
-        'Untrained': 'ยังไม่ผ่าน',
-        'Partially Trained': 'ขั้นต้น',
-        'Fully Trained': 'พื้นฐาน'
+        'ยังไม่ผ่านการฝึก': ['ยังไม่ผ่านการฝึก'],
+
+        'ผ่านการฝึกขั้นต้น': [
+          'ผ่านการฝึกขั้นต้น',
+          'ขั้นต้น'
+        ],
+
+        'ผ่านการฝึกขั้นสูง': [
+          'ผ่านการฝึกขั้นสูง',
+          'ขั้นสูง'
+        ],
+
+        'ผ่านการฝึกพื้นฐาน': [
+          'ผ่านการฝึกพื้นฐาน',
+        ]
       };
 
-      const target = (trainingMap[training_status] || '').toLowerCase();
+      const targets = trainingMap[training_status] || [];
 
       dogs = dogs.filter(d => {
         const value = (d.training_status || '').toLowerCase();
-        return value.includes(target);
+        return targets.some(t => value.includes(t));
       });
     }
 

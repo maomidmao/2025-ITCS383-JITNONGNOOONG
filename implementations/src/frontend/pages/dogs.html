@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>สุนัขรอหาบ้าน — JITNONGNOONG</title>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
@@ -9,111 +11,135 @@
 </head>
 
 <body>
-<a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
-<nav class="nav" role="navigation" aria-label="เมนูหลัก">
-  <div class="nav__inner">
-    <a href="/" class="nav__logo"><div class="nav__logo-icon" aria-hidden="true">🐾</div>JITNONGNOONG</a>
-    <ul class="nav__links" role="list"><li><a href="/pages/dogs.html" aria-current="page">สุนัขรอหาบ้าน</a></li></ul>
-    <div class="nav__user" id="navUser"><a href="/pages/login.html" class="btn btn--outline btn--sm">เข้าสู่ระบบ</a></div>
-  </div>
-</nav>
-<div class="page-header"><div class="page-header__inner"><h1 class="page-header__title">🐶 สุนัขรอหาบ้าน</h1><p class="page-header__sub">ค้นหาเพื่อนสี่ขาที่ใช่สำหรับคุณ</p></div></div>
-<div class="filter-bar" role="search" aria-label="ค้นหาและกรองสุนัข">
-  <div class="filter-bar__top">
-    <div class="search-input-wrap">
-      <span class="search-icon" aria-hidden="true">🔍</span>
-      <input 
-        class="form-control" 
-        type="search" 
-        id="searchKeyword" 
-        placeholder="ค้นหาชื่อหรือสายพันธุ์..." 
-        aria-label="ค้นหาสุนัข"
-        oninput="debouncedSearch()">
-    </div>
-    <button 
-      class="btn btn--outline btn--sm" 
-      id="toggleFilters" 
-      onclick="toggleFilterPanel()"
-      aria-label="เปิด/ปิดแผงกรอง"
-      aria-expanded="false">
-      ⚙️ ตัวกรอง
-    </button>
-  </div>
-
-  <div class="filter-panel" id="filterPanel" aria-hidden="true">
-    <div class="filter-group">
-      <label class="filter-label" for="filterBreed">สายพันธุ์</label>
-      <select class="form-control" id="filterBreed" onchange="performSearch()">
-        <option value="">ทั้งหมด</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label class="filter-label" for="filterColor">สี</label>
-      <select class="form-control" id="filterColor" onchange="performSearch()">
-        <option value="">ทั้งหมด</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label class="filter-label" for="filterTraining">สถานะการฝึก</label>
-      <select class="form-control" id="filterTraining" onchange="performSearch()">
-        <option value="">ทั้งหมด</option>
-        <option value="Untrained">ยังไม่ฝึก</option>
-        <option value="Partially Trained">ฝึกแล้วบ้าง</option>
-        <option value="Fully Trained">ฝึกแล้วทั้งหมด</option>
-      </select>
-    </div>
-
-    <div class="filter-group">
-      <label class="filter-label filter-label--toggle" for="filterAvailability">
-        <input 
-          type="checkbox" 
-          id="filterAvailability" 
-          onchange="performSearch()"
-          aria-label="แสดงเฉพาะสุนัขที่ว่าง">
-        <span>แสดงเฉพาะสุนัขที่ว่าง</span>
-      </label>
-    </div>
-
-    <div class="filter-actions">
-      <button class="btn btn--outline btn--sm" onclick="resetFilters()">ล้างตัวกรอง</button>
-    </div>
-  </div>
-
-  <span id="resultCount" class="filter-bar__count" aria-live="polite"></span>
-</div>
-<main id="main"><div class="page-container"><div class="dogs-grid" id="dogsGrid" aria-live="polite"><div class="loading-overlay" style="grid-column:1/-1"><span class="spinner"></span> กำลังโหลด...</div></div></div></main>
-
-<div class="panel-overlay" id="panelOverlay" onclick="closeDetail()" aria-hidden="true"></div>
-<aside class="detail-panel" id="detailPanel" role="complementary" aria-label="รายละเอียดสุนัข" aria-hidden="true">
-  <div class="detail-panel__header"><span class="detail-panel__title" id="detailName"></span><button class="modal__close" onclick="closeDetail()" aria-label="ปิด">✕</button></div>
-  <div class="detail-panel__img" id="detailImg" aria-hidden="true"></div>
-  <div class="detail-panel__body" id="detailBody"></div>
-  <div class="detail-panel__footer" id="detailFooter"></div>
-</aside>
-
-<div class="modal-overlay" id="adoptModal" role="dialog" aria-modal="true" aria-labelledby="adoptTitle">
-  <div class="modal"><div class="modal__header"><h2 class="modal__title" id="adoptTitle">ยื่นคำขอรับเลี้ยง</h2><button class="modal__close" onclick="closeAdopt()" aria-label="ปิด">✕</button></div>
-  <div class="modal__body">
-    <div id="adoptAlert" class="alert" role="alert" aria-live="polite"></div>
-    <p class="text-muted text-small mb-6">สุนัข: <strong id="adoptDogName"></strong></p>
-    <form id="adoptForm" novalidate>
-      <input type="hidden" id="adoptDogId">
-      <div class="form-row">
-        <div class="form-group"><label class="form-label form-label--required" for="adoptName">ชื่อ-นามสกุล</label><input class="form-control" type="text" id="adoptName" required></div>
-        <div class="form-group"><label class="form-label form-label--required" for="adoptPhone">เบอร์โทร</label><input class="form-control" type="tel" id="adoptPhone" required></div>
+  <a class="skip-link" href="#main">ข้ามไปเนื้อหาหลัก</a>
+  <nav class="nav" role="navigation" aria-label="เมนูหลัก">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">
+        <div class="nav__logo-icon" aria-hidden="true">🐾</div>JITNONGNOONG
+      </a>
+      <ul class="nav__links" role="list">
+        <li><a href="/pages/dogs.html" aria-current="page">สุนัขรอหาบ้าน</a></li>
+      </ul>
+      <div class="nav__user" id="navUser"><a href="/pages/login.html" class="btn btn--outline btn--sm">เข้าสู่ระบบ</a>
       </div>
-      <div class="form-group"><label class="form-label form-label--required" for="adoptEmail">อีเมล</label><input class="form-control" type="email" id="adoptEmail" required></div>
-      <div class="form-group"><label class="form-label form-label--required" for="adoptAddress">ที่อยู่</label><textarea class="form-control" id="adoptAddress" required rows="2"></textarea></div>
-      <div class="form-group"><label class="form-label form-label--required" for="adoptLiving">ประเภทที่พัก</label><select class="form-control" id="adoptLiving" required><option value="house">บ้านเดี่ยว</option><option value="condo">คอนโด</option><option value="apartment">อพาร์ตเมนต์</option><option value="townhouse">ทาวน์เฮาส์</option></select></div>
-      <div class="form-group"><label class="form-label" for="adoptMsg">เหตุผลที่ต้องการรับเลี้ยง</label><textarea class="form-control" id="adoptMsg" rows="2"></textarea></div>
-      <button type="submit" id="adoptBtn" class="btn btn--primary" style="width:100%">ยื่นคำขอ</button>
-    </form>
-  </div></div>
-</div>
+    </div>
+  </nav>
+  <div class="page-header">
+    <div class="page-header__inner">
+      <h1 class="page-header__title">🐶 สุนัขรอหาบ้าน</h1>
+      <p class="page-header__sub">ค้นหาเพื่อนสี่ขาที่ใช่สำหรับคุณ</p>
+    </div>
+  </div>
+  <div class="filter-bar" role="search" aria-label="ค้นหาและกรองสุนัข">
+    <div class="filter-bar__top">
+      <div class="search-input-wrap">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input class="form-control" type="search" id="searchKeyword" placeholder="ค้นหาชื่อ..."
+          aria-label="ค้นหาสุนัข" oninput="debouncedSearch()">
+      </div>
+      <button class="btn btn--outline btn--sm" id="toggleFilters" onclick="toggleFilterPanel()"
+        aria-label="เปิด/ปิดแผงกรอง" aria-expanded="false">
+        ⚙️ ตัวกรอง
+      </button>
+    </div>
 
-<script src="/js/api.js"></script>
-<script src="/js/dogs.js"></script>
+    <div class="filter-panel" id="filterPanel" aria-hidden="true">
+      <div class="filter-group">
+        <label class="filter-label" for="filterBreed">สายพันธุ์</label>
+        <select class="form-control" id="filterBreed" onchange="performSearch()">
+          <option value="">ทั้งหมด</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="filterColor">สี</label>
+        <select class="form-control" id="filterColor" onchange="performSearch()">
+          <option value="">ทั้งหมด</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label" for="filterTraining">สถานะการฝึก</label>
+        <select class="form-control" id="filterTraining" onchange="performSearch()">
+          <option value="">ทั้งหมด</option>
+          <option value="ยังไม่ผ่านการฝึก">ยังไม่ผ่านการฝึก</option>
+          <option value="ผ่านการฝึกขั้นต้น">ผ่านการฝึกขั้นต้น</option>
+          <option value="ผ่านการฝึกขั้นสูง">ผ่านการฝึกขั้นสูง</option>
+          <option value="ผ่านการฝึกพื้นฐาน">ผ่านการฝึกพื้นฐาน</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label filter-label--toggle" for="filterAvailability">
+          <input type="checkbox" id="filterAvailability" onchange="performSearch()" aria-label="แสดงเฉพาะสุนัขที่ว่าง">
+          <span>แสดงเฉพาะสุนัขที่ว่าง</span>
+        </label>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn--outline btn--sm" onclick="resetFilters()">ล้างตัวกรอง</button>
+      </div>
+    </div>
+
+    <span id="resultCount" class="filter-bar__count" aria-live="polite"></span>
+  </div>
+  <main id="main">
+    <div class="page-container">
+      <div class="dogs-grid" id="dogsGrid" aria-live="polite">
+        <div class="loading-overlay" style="grid-column:1/-1"><span class="spinner"></span> กำลังโหลด...</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="panel-overlay" id="panelOverlay" onclick="closeDetail()" aria-hidden="true"></div>
+  <aside class="detail-panel" id="detailPanel" role="complementary" aria-label="รายละเอียดสุนัข" aria-hidden="true">
+    <div class="detail-panel__header"><span class="detail-panel__title" id="detailName"></span><button
+        class="modal__close" onclick="closeDetail()" aria-label="ปิด">✕</button></div>
+    <div class="detail-panel__img" id="detailImg" aria-hidden="true"></div>
+    <div class="detail-panel__body" id="detailBody"></div>
+    <div class="detail-panel__footer" id="detailFooter"></div>
+  </aside>
+
+  <div class="modal-overlay" id="adoptModal" role="dialog" aria-modal="true" aria-labelledby="adoptTitle">
+    <div class="modal">
+      <div class="modal__header">
+        <h2 class="modal__title" id="adoptTitle">ยื่นคำขอรับเลี้ยง</h2><button class="modal__close"
+          onclick="closeAdopt()" aria-label="ปิด">✕</button>
+      </div>
+      <div class="modal__body">
+        <div id="adoptAlert" class="alert" role="alert" aria-live="polite"></div>
+        <p class="text-muted text-small mb-6">สุนัข: <strong id="adoptDogName"></strong></p>
+        <form id="adoptForm" novalidate>
+          <input type="hidden" id="adoptDogId">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label form-label--required"
+                for="adoptName">ชื่อ-นามสกุล</label><input class="form-control" type="text" id="adoptName" required>
+            </div>
+            <div class="form-group"><label class="form-label form-label--required"
+                for="adoptPhone">เบอร์โทร</label><input class="form-control" type="tel" id="adoptPhone" required></div>
+          </div>
+          <div class="form-group"><label class="form-label form-label--required" for="adoptEmail">อีเมล</label><input
+              class="form-control" type="email" id="adoptEmail" required></div>
+          <div class="form-group"><label class="form-label form-label--required"
+              for="adoptAddress">ที่อยู่</label><textarea class="form-control" id="adoptAddress" required
+              rows="2"></textarea></div>
+          <div class="form-group"><label class="form-label form-label--required"
+              for="adoptLiving">ประเภทที่พัก</label><select class="form-control" id="adoptLiving" required>
+              <option value="house">บ้านเดี่ยว</option>
+              <option value="condo">คอนโด</option>
+              <option value="apartment">อพาร์ตเมนต์</option>
+              <option value="townhouse">ทาวน์เฮาส์</option>
+            </select></div>
+          <div class="form-group"><label class="form-label" for="adoptMsg">เหตุผลที่ต้องการรับเลี้ยง</label><textarea
+              class="form-control" id="adoptMsg" rows="2"></textarea></div>
+          <button type="submit" id="adoptBtn" class="btn btn--primary" style="width:100%">ยื่นคำขอ</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/dogs.js"></script>
 </body>
+
 </html>
