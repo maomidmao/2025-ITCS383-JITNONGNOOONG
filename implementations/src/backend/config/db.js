@@ -1,16 +1,19 @@
 const mysql = require('mysql2/promise');
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+
+// โหลด .env เฉพาะตอน local
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const pool = mysql.createPool({
-  host:     process.env.DB_HOST     || 'localhost',
-  port:     parseInt(process.env.DB_PORT || '3306'),
-  user:     process.env.DB_USER     || 'root',
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '3306'),
+  user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME     || 'dog_adoption_db',
+  database: process.env.DB_NAME || 'dog_adoption_db',
   waitForConnections: true,
   connectionLimit: 10,
-  charset: 'utf8mb4',
+  charset: 'utf8mb4'
 });
 
 module.exports = pool;
