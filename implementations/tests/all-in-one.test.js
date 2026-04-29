@@ -49,6 +49,12 @@ const EXPECTED_OUTPUTS = [
   ['GET /reports/summary returns aggregated metrics', '200', 'dogs.total = 10, sponsors.donorCount = 5'],
   ['GET /reports/ai-summary returns generated text and metrics', '200', 'text contains สรุปรายงานอัตโนมัติ'],
   ['GET /reports/potential-adopters returns adopter list', '200', 'adopters.length = 1'],
+  ['GET /api/notifications returns 200 with notifications list', '200', 'notifications array returned'],
+  ['POST /api/notifications returns 201 when notification created', '201', "{ message: 'Notification created successfully' }"],
+  ['PATCH /api/notifications/:id/read marks as read', '200', "{ message: 'Notification marked as read' }"],
+  ['searchDogs returns dogs with limit and offset', 'success', 'dogs array with correct pagination'],
+  ['getDogById returns dog with staff name', 'success', 'dog object with all properties'],
+  ['getAllDogs uses custom limit and offset', 'success', 'dogs array with custom pagination'],
 ];
 
 // Keep visible in runtime for quick check if needed.
@@ -66,3 +72,5 @@ require('./routes.checkups.test');
 require('./routes.verify.test');
 require('./routes.sponsors.test');
 require('./routes.reports.test');
+require('./routes.notifications.test');
+require('./services.dogService.test');
