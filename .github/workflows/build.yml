@@ -25,8 +25,11 @@ jobs:
         run: npm install
         working-directory: implementations
 
-      - name: Run tests
-        run: npm test || echo "No tests"
+      - name: Run tests and generate coverage
+        # Added the sed command here so it ALWAYS runs, even if a test fails!
+        run: |
+          npm test || true
+          sed -i 's|^SF:src/|SF:implementations/src/|' ./coverage/lcov.info
         working-directory: implementations
 
       # 🔥 SonarCloud (สำคัญ)
@@ -34,5 +37,10 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           projectBaseDir: .
+          args: >
+            -Dsonar.javascript.lcov.reportPaths=implementations/coverage/lcov.info
+            -Dsonar.sources=implementations/src
+            -Dsonar.tests=implementations/tests
+            -Dsonar.test.inclusions=**/*.test.js,**/*.spec.js
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
