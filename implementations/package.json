@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/backend/server.js",
     "dev": "nodemon src/backend/server.js",
-    "pretest": "mkdir -p coverage",
+    "pretest": "if not exist coverage mkdir coverage",
     "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=lcov --test-reporter-destination=./coverage/lcov.info tests/all-in-one.test.js",
     "posttest": "sed -i 's|^SF:src/|SF:implementations/src/|' ./coverage/lcov.info"
   },
