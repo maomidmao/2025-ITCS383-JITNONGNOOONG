@@ -119,16 +119,28 @@ async function runHandlers(handlers, req, res = createRes()) {
 
 function createDbMockQueue(queue = []) {
   const calls = [];
+  
+  const executeFunc = async (sql, params = []) => {
+    calls.push({ sql, params });
+    if (!queue.length) {
+      throw new Error(`No mock DB result for SQL: ${sql}`);
+    }
+    const next = queue.shift();
+    if (next instanceof Error) throw next;
+    if (typeof next === 'function') return next({ sql, params, calls });
+    return next;
+  };
+
   const db = {
-    execute: async (sql, params = []) => {
-      calls.push({ sql, params });
-      if (!queue.length) {
-        throw new Error(`No mock DB result for SQL: ${sql}`);
-      }
-      const next = queue.shift();
-      if (next instanceof Error) throw next;
-      if (typeof next === 'function') return next({ sql, params, calls });
-      return next;
+    execute: executeFunc,
+    getConnection: async () => {
+      return {
+        execute: executeFunc,
+        beginTransaction: async () => {},
+        commit: async () => {},
+        rollback: async () => {},
+        release: () => {},
+      };
     },
   };
   return { db, calls };

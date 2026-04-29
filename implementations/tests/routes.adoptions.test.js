@@ -204,12 +204,13 @@ test('POST /adoptions returns 400 for invalid living type', async () => {
 
 test('PUT /adoptions/:id/review approve succeeds with PASSED verification', async () => {
   const { db } = createDbMockQueue([
-    [[{ AdoptionReqNo: 1, DogId: 2, verification_status: 'PASSED' }]],
-    [{}],
-    [{}],
-    [{}],
-    [[]],
-    [{}],
+    [[{ AdoptionReqNo: 1, DogId: 2, verification_status: 'PASSED', UserId: 5 }]],
+    [{}],  // UPDATE adoption_requests SET ReqStatus='APPROVED'
+    [{}],  // UPDATE dogs SET DogStatus='ADOPTED'
+    [{}],  // UPDATE adoption_requests (close other pending)
+    [[]],  // SELECT delivery_schedules
+    [{}],  // INSERT delivery_schedules
+    [{}],  // INSERT notification
   ]);
   const router = loadRoute('routes/adoptions.js', { dbMock: db });
   const handlers = getHandlers(router, 'put', '/:id/review');
@@ -225,10 +226,11 @@ test('PUT /adoptions/:id/review approve succeeds with PASSED verification', asyn
 
 test('PUT /adoptions/:id/review reject succeeds', async () => {
   const { db } = createDbMockQueue([
-    [[{ AdoptionReqNo: 1, DogId: 2, verification_status: 'PENDING' }]],
-    [{}],
-    [[{ total: 0 }]],
-    [{}],
+    [[{ AdoptionReqNo: 1, DogId: 2, verification_status: 'PENDING', UserId: 5 }]],
+    [{}],  // UPDATE adoption_requests SET ReqStatus='REJECTED'
+    [[{ total: 0 }]],  // SELECT COUNT (no other pending requests)
+    [{}],  // UPDATE dogs SET DogStatus
+    [{}],  // INSERT notification
   ]);
   const router = loadRoute('routes/adoptions.js', { dbMock: db });
   const handlers = getHandlers(router, 'put', '/:id/review');

@@ -1,0 +1,6 @@
+projectKey=JITNONGNOOONG1
+serverUrl=http://localhost:9000
+serverVersion=26.4.0.121862
+dashboardUrl=http://localhost:9000/dashboard?id=JITNONGNOOONG1
+ceTaskId=02a21c90-b5ff-4391-ad82-8b80f96ef38c
+ceTaskUrl=http://localhost:9000/api/ce/task?id=02a21c90-b5ff-4391-ad82-8b80f96ef38c
