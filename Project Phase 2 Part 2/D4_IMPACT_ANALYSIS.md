@@ -126,16 +126,16 @@ Overall, the system has a clear structure, but central modules like server.js an
 
 | From → To        | server.js | auth.js | dogs.js | dogService.js | notifications.js | middleware/auth.js | config/db.js | api.js (FE) | dogs.js (FE) | index.js (FE) |
 |-----------------|-----------|---------|---------|---------------|------------------|--------------------|--------------|--------------|---------------|----------------|
-| server.js        | -         | 1       | 1       | 2             | 1                | 2                  | 2            | x            | x             | x              |
-| auth.js          | x         | -       | x       | x             | x                | 1                  | 1            | x            | x             | x              |
-| dogs.js          | x         | x       | -       | 1             | x                | 1                  | 1            | x            | x             | x              |
-| dogService.js    | x         | x       | x       | -             | x                | x                  | 1            | x            | x             | x              |
-| notifications.js | x         | x       | x       | x             | -                | 1                  | 1            | x            | x             | x              |
-| middleware/auth.js | x       | x       | x       | x             | x                | -                  | x            | x            | x             | x              |
-| config/db.js     | x         | x       | x       | x             | x                | x                  | -            | x            | x             | x              |
-| api.js (FE)      | x         | x       | x       | x             | x                | x                  | x            | -            | x             | x              |
-| dogs.js (FE)     | x         | x       | x       | x             | x                | x                  | x            | 1            | -             | x              |
-| index.js (FE)    | x         | x       | x       | x             | x                | x                  | x            | 1            | x             | -              |
+| server.js        | -         | 1       | 1       | 2             | 1                | 2                  | 2            | -            | -             | -              |
+| auth.js          | -         | -       | -       | -             | -                | 1                  | 1            | -            | -             | -              |
+| dogs.js          | -         | -       | -       | 1             | -                | 1                  | 1            | -            | -             | -              |
+| dogService.js    | -         | -       | -       | -             | -                | x                  | 1            | -            | -             | -              |
+| notifications.js | -         | -       | -       | -             | -                | 1                  | 1            | -            | -             | -              |
+| middleware/auth.js | -       | -       | -       | -             | -                | -                  | -            | -            | -             | -              |
+| config/db.js     | -         | -       | -       | -             | -                | -                  | -            | -            | -             | -              |
+| api.js (FE)      | -         | -       | -       | -             | -                | -                  | -            | -            | -             | -              |
+| dogs.js (FE)     | -         | -       | -       | -             | -                | -                  | -            | 1            | -             | -              |
+| index.js (FE)    | -         | -       | -       | -             | -                | -                  | -            | 1            | -             | -              |
 
 ## Connectivity Matrix Analysis
 
