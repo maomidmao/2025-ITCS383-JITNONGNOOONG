@@ -75,10 +75,30 @@
 
 # Another version of the traceability graph that includes only the parts affected by the changes
 
+
 <img width="1221" height="745" alt="2" src="https://github.com/user-attachments/assets/b5aa9cdb-d71d-49a3-a1eb-5e9c5b947106" />
 
-#Directed graph of SLOs 
 
+# Directed graph of SLOs 
 
-#Connectivity Matrix
+<img width="840" height="835" alt="3" src="https://github.com/user-attachments/assets/4379bfda-64bd-42f1-86d8-9fe619474411" />
+
+# Connectivity Matrix
+
+## Shows the **shortest dependency distance** between each pair of modules.
+> `1` = directly connected, `2` = one hop apart, `x` = no path, `-` = same module.
+
+| From → To        | server.js | auth.js | dogs.js | dogService.js | notifications.js | middleware/auth.js | config/db.js | api.js (FE) | dogs.js (FE) | index.js (FE) |
+|-----------------|-----------|---------|---------|---------------|------------------|--------------------|--------------|--------------|---------------|----------------|
+| server.js        | -         | 1       | 1       | 2             | 1                | 2                  | 3            | x            | x             | x              |
+| auth.js          | x         | -       | x       | x             | x                | 1                  | 1            | x            | x             | x              |
+| dogs.js          | x         | x       | -       | 1             | x                | 1                  | 1            | x            | x             | x              |
+| dogService.js    | x         | x       | x       | -             | x                | x                  | 1            | x            | x             | x              |
+| notifications.js | x         | x       | x       | x             | -                | 1                  | 1            | x            | x             | x              |
+| middleware/auth.js | x       | x       | x       | x             | x                | -                  | x            | x            | x             | x              |
+| config/db.js     | x         | x       | x       | x             | x                | x                  | -            | x            | x             | x              |
+| api.js (FE)      | x         | x       | x       | x             | x                | x                  | x            | -            | x             | x              |
+| dogs.js (FE)     | x         | x       | x       | x             | x                | x                  | x            | 1            | -             | x              |
+| index.js (FE)    | x         | x       | x       | x             | x                | x                  | x            | 1            | x             | -              |
+
 
