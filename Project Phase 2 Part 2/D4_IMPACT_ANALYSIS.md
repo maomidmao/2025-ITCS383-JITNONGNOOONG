@@ -90,7 +90,7 @@
 
 | From → To        | server.js | auth.js | dogs.js | dogService.js | notifications.js | middleware/auth.js | config/db.js | api.js (FE) | dogs.js (FE) | index.js (FE) |
 |-----------------|-----------|---------|---------|---------------|------------------|--------------------|--------------|--------------|---------------|----------------|
-| server.js        | -         | 1       | 1       | 2             | 1                | 2                  | 3            | x            | x             | x              |
+| server.js        | -         | 1       | 1       | 2             | 1                | 2                  | 2            | x            | x             | x              |
 | auth.js          | x         | -       | x       | x             | x                | 1                  | 1            | x            | x             | x              |
 | dogs.js          | x         | x       | -       | 1             | x                | 1                  | 1            | x            | x             | x              |
 | dogService.js    | x         | x       | x       | -             | x                | x                  | 1            | x            | x             | x              |
