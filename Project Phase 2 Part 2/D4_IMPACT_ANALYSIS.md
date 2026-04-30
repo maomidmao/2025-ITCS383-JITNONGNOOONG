@@ -71,6 +71,8 @@
 | T9  | Auth Middleware Tests | `middleware.auth.test.js` |
 
 ---
+# traceability graph
+
 <img width="799" height="833" alt="1" src="https://github.com/user-attachments/assets/157ba961-0b57-4c69-94f5-b7ed43af727a" />
 
 # Another version of the traceability graph that includes only the parts affected by the changes
