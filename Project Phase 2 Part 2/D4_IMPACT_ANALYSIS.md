@@ -73,8 +73,7 @@
 ---
 <img width="799" height="833" alt="1" src="https://github.com/user-attachments/assets/157ba961-0b57-4c69-94f5-b7ed43af727a" />
 
-# Another version of the traceability graph that includes
-only the parts affected by the changes
+# Another version of the traceability graph that includes only the parts affected by the changes
 
 <img width="1221" height="745" alt="2" src="https://github.com/user-attachments/assets/b5aa9cdb-d71d-49a3-a1eb-5e9c5b947106" />
 
