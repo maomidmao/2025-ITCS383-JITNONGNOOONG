@@ -101,4 +101,39 @@
 | dogs.js (FE)     | x         | x       | x       | x             | x                | x                  | x            | 1            | -             | x              |
 | index.js (FE)    | x         | x       | x       | x             | x                | x                  | x            | 1            | x             | -              |
 
+### Q1 Which CRs are easy to implement and why?
+
+| CR | Type | Why Easy |
+| --- | --- | --- |
+| **CR-02** Fix decimal `limit` param | Corrective | A one-line guard in `dogs.js`. No DB schema change, no new files. |
+| **CR-05** Add composite DB index | Perfective | A single `CREATE INDEX` SQL statement. Does not change any application code. |
+| **CR-08** Escape LIKE wildcards | Preventive | A small helper function added to `dogService.js`. Localised change with no side-effects on other modules. |
+| **CR-07** Deduplicate reminders | Preventive | Already implemented in `auth.js` with a single `SELECT` check before `INSERT`. No schema change needed. |
+
+**Summary:** CRs that only touch a single module, require no schema changes, and have no downstream consumers are easiest to implement and test.
+
+---
+
+### Q2 Which CRs are difficult to implement and why?
+
+| CR | Type | Why Difficult |
+| --- | --- | --- |
+| **CR-03** Auto-notify on adoption decision | Adaptive | Requires coordinating two modules (`adoptions.js` writes a record, `notifications.js` stores it). The adoption flow must be updated atomically so a notification is never inserted without a successful status change. |
+| **CR-04** Standardised response for mobile | Adaptive | Required creating a brand-new service layer (`dogService.js`), a new API endpoint (`/api/dogs/search`), updating the frontend (`dogs.js`), and ensuring backward compatibility with the old `/api/dogs` endpoint so existing web pages do not break. |
+| **CR-06** Notification dropdown UX | Perfective | Involves cross-cutting changes across HTML structure, CSS styling, and JavaScript logic (`index.js`). "Mark all as read" requires multiple sequential API calls and local state management in the UI. |
+
+**Summary:** CRs that span multiple modules, require new DB tables, or must maintain backward compatibility are the most difficult.
+
+---
+
+### Q3 What improvements are expected from previous developers?
+
+Based on the inherited codebase analysis:
+
+1. **No service layer.** All business logic was written directly inside route handlers (`dogs.js` had 311 lines of mixed routing and SQL). We introduced `dogService.js` to separate concerns. Future developers should continue this pattern for `adoptions.js` and `checkups.js`.
+2. **Inconsistent API response format.** Some endpoints returned `{ dogs: [] }`, others `{ message: '...' }`, and the new search endpoint returns `{ success, data, message }`. A shared response helper should be created to enforce one format across all routes.
+3. **No input validation middleware.** Each route manually validates its own inputs. A shared validation layer (e.g., using `express-validator`) would reduce duplication and prevent bugs like the decimal `limit` issue (CR-02).
+4. **Missing notification integration in adoption flow**. The original `adoptions.js` had no side-effects on the notifications table. Developers should ensure all user-facing status changes (delivery scheduled, check-up approved, etc.) trigger appropriate notifications.
+5. **Frontend JS files are large and unstructured**. `dogs.js` (frontend) is 18,999 bytes of mixed DOM manipulation, API calls, and UI logic. Breaking it into smaller, focused modules would improve maintainability.
+
 
