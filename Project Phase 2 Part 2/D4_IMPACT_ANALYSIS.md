@@ -101,6 +101,8 @@
 | dogs.js (FE)     | x         | x       | x       | x             | x                | x                  | x            | 1            | -             | x              |
 | index.js (FE)    | x         | x       | x       | x             | x                | x                  | x            | 1            | x             | -              |
 
+## Analysis Questions
+
 ### Q1 Which CRs are easy to implement and why?
 
 | CR | Type | Why Easy |
