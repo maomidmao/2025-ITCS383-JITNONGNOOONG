@@ -75,15 +75,50 @@
 
 <img width="799" height="833" alt="1" src="https://github.com/user-attachments/assets/157ba961-0b57-4c69-94f5-b7ed43af727a" />
 
+## Traceability Graph Analysis
+
+The traceability graph shows how requirements (R) connect to design (D), code (C), and test (T).
+
+Most core features like login (R1, R2), dog search (R3, R4), and notifications (R12) are fully linked across all layers. For example, the notification system (R12) connects to the notifications table (D7), notifications routes (C9), and related test cases.
+
+Important features like adoption (R6, R7) and dog management (R13) connect to many modules, which means they are more complex and tightly linked.
+
+Overall, the system has good traceability. Most requirements are clearly implemented and tested. However, some parts have many connections, which may make them harder to maintain.
+
 # Another version of the traceability graph that includes only the parts affected by the changes
 
 
 <img width="1221" height="745" alt="2" src="https://github.com/user-attachments/assets/b5aa9cdb-d71d-49a3-a1eb-5e9c5b947106" />
 
+## Affected Traceability Graph Analysis
+
+This graph shows only the parts affected by the new features: search (R4) and notifications (R12).
+
+These changes mainly affect the dogs table (D2), notifications table (D7), and search API (D10). The related code includes dogs routes (C2), notifications routes (C9), and dog service (C10), along with frontend modules (CF1–CF3).
+
+The impact is limited to a few modules, which means the system is fairly modular. Changes do not spread to unrelated parts.
+
+However, there are still links between frontend and backend, so testing must cover both sides.
+
+Overall, the impact is moderate and mostly localized.
 
 # Directed graph of SLOs 
 
 <img width="840" height="835" alt="3" src="https://github.com/user-attachments/assets/4379bfda-64bd-42f1-86d8-9fe619474411" />
+
+## SLO Graph Analysis
+
+The SLO graph shows dependencies between code modules. Each arrow means one module depends on another.
+
+server.js is the main entry point and connects to many modules like auth.js, dogs.js, and notifications.js.
+
+Backend modules use services and middleware (dogService.js, middleware/auth.js, config/db.js), which shows a layered design. This helps keep code organized.
+
+config/db.js is used by many modules, so it is a critical shared component. Changes here can affect many parts.
+
+Frontend modules (index.js, dogs.js, api.js) mostly go through api.js to reach the backend. This reduces direct coupling.
+
+Overall, the system has a clear structure, but central modules like server.js and config/db.js are high-impact points.
 
 # Connectivity Matrix
 
@@ -102,6 +137,20 @@
 | api.js (FE)      | x         | x       | x       | x             | x                | x                  | x            | -            | x             | x              |
 | dogs.js (FE)     | x         | x       | x       | x             | x                | x                  | x            | 1            | -             | x              |
 | index.js (FE)    | x         | x       | x       | x             | x                | x                  | x            | 1            | x             | -              |
+
+## Connectivity Matrix Analysis
+
+The connectivity matrix shows the shortest distance between modules.
+
+server.js has short distances to many modules, showing it is the central controller. config/db.js is also close to many modules, making it a key shared dependency.
+
+Distance = 1 means direct connection, such as dogs.js → dogService.js. Distance = 2 or 3 means indirect connections.
+
+"x" means no connection, which shows some modules are independent. This is good for reducing side effects.
+
+However, many modules depend on shared components like config/db.js and middleware/auth.js. Changes in these modules can affect many others.
+
+Overall, the matrix confirms a moderately connected system with some strong central dependencies.
 
 ## Analysis Questions
 
