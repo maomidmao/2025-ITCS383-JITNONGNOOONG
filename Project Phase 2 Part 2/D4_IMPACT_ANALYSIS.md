@@ -123,7 +123,6 @@ Overall, the system has a clear structure, but central modules like server.js an
 # Connectivity Matrix
 
 ## Shows the **shortest dependency distance** between each pair of modules.
-> `1` = directly connected, `2` = one hop apart, `x` = no path, `-` = same module.
 
 | From → To        | server.js | auth.js | dogs.js | dogService.js | notifications.js | middleware/auth.js | config/db.js | api.js (FE) | dogs.js (FE) | index.js (FE) |
 |-----------------|-----------|---------|---------|---------------|------------------|--------------------|--------------|--------------|---------------|----------------|
