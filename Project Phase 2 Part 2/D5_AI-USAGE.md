@@ -1,12 +1,3 @@
-# D5: Al-Usage Report
-
-## D5: AI-Usage Report Description
-
-- You can use the AI coding agents to help you complete this project. However,
-you must report on how to use such AIs.
-- Create a file called D5_AI-USAGE.md and list the activities that you use the
-AI to help you with in this project.
-
 # D5: AI-Usage Report
 
 This document serves as the required D5 deliverable outlining how AI coding agents were used to assist in the completion of Project Phase 2 Part 2. The AI was utilized to accelerate the development of the new notification features, maintain architectural consistency, and troubleshoot deployment infrastructure.
