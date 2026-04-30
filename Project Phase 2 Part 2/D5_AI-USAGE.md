@@ -35,11 +35,13 @@ The development of the notification system and related infrastructure was broken
 - **Session Persistence Fix:** When deploying the backend to Render, sessions were not persisting. The AI analyzed the issue and identified that Render acts as a reverse proxy. It provided the necessary fix by updating the session cookie configuration to include `secure: true` and `sameSite: 'none'`, which is required for cross-domain HTTP/HTTPS handling.
 
 ## 2. Summary of AI Prompts
-Development Area	AI Prompt / Instruction	Resulting Artifact
-Database	"Design a MySQL table for notifications... Include: id, user_id, message, type..."	notifications table schema
-Routing	"Create Express APIs for notification system... Follow agent.md coding rules."	services/notificationService.js
-Triggers	"Modify the adoption approval/rejection logic. When staff: approves -> create notification..."	Updated routes/adoptions.js
-Reminders	"Implement a simple monthly reminder system... check on login."	checkAndNotifyDueCheckups function
-Frontend UI	"Create a notification bell icon in the header. Requirements: - show unread count..."	UI injection logic in api.js
-Bug Fixing	"Login works but session is not persisted on Render. POST... succeeds, but GET... returns 401."	Corrected proxy cookie configurations
-Mobile Application	“Making a mobile application using flutter (dart). All feature and pages design must match the web application” 	Whole mobile application in mobile folder
+
+| Development Area | AI Prompt / Instruction | Resulting Artifact |
+|-----------------|------------------------|--------------------|
+| Database | "Design a MySQL table for notifications... Include: id, user_id, message, type..." | `notifications` table schema |
+| Routing | "Create Express APIs for notification system... Follow agent.md coding rules." | `services/notificationService.js` |
+| Triggers | "Modify the adoption approval/rejection logic. When staff: approves -> create notification..." | Updated `routes/adoptions.js` |
+| Reminders | "Implement a simple monthly reminder system... check on login." | `checkAndNotifyDueCheckups` function |
+| Frontend UI | "Create a notification bell icon in the header. Requirements: show unread count..." | UI injection logic in `api.js` |
+| Bug Fixing | "Login works but session is not persisted on Render. POST succeeds, but GET... returns 401." | Corrected proxy cookie configurations |
+| Mobile Application | "Making a mobile application using flutter (dart). All feature and pages design must match the web application" | Whole mobile application in mobile folder |
