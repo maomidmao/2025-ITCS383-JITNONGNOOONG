@@ -129,7 +129,7 @@ Overall, the system has a clear structure, but central modules like server.js an
 | server.js        | -         | 1       | 1       | 2             | 1                | 2                  | 2            | -            | -             | -              |
 | auth.js          | -         | -       | -       | -             | -                | 1                  | 1            | -            | -             | -              |
 | dogs.js          | -         | -       | -       | 1             | -                | 1                  | 1            | -            | -             | -              |
-| dogService.js    | -         | -       | -       | -             | -                | x                  | 1            | -            | -             | -              |
+| dogService.js    | -         | -       | -       | -             | -                | -                  | 1            | -            | -             | -              |
 | notifications.js | -         | -       | -       | -             | -                | 1                  | 1            | -            | -             | -              |
 | middleware/auth.js | -       | -       | -       | -             | -                | -                  | -            | -            | -             | -              |
 | config/db.js     | -         | -       | -       | -             | -                | -                  | -            | -            | -             | -              |
